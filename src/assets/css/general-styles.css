@@ -1,0 +1,52 @@
+.text-card{
+  font-family: 'Milkstore' !important;
+  font-size: 23px !important;
+  background-color: #8A2432;
+  color: white;
+  font-size: medium;
+  max-width: 190px;
+  padding: 10px;
+  border: none;
+}
+.main-title{
+  font-family: 'Magneton';
+  font-size: 90px;
+}
+/* // 8A2432 */
+.dot {
+  height: 13px;
+  width: 13px;
+  background-color: #c22b3f;
+  border-radius: 50%;
+  margin: 0;
+  padding: 0;
+}
+
+.main-content > *{
+  font-family: 'Milkstore04';
+}
+.milkstore-text{
+  font-family: 'Milkstore';
+}
+.milkstore04-text{
+  font-family: 'Milkstore04';
+}
+.text-xs{
+  font-size: 14px;
+}
+.text-xxs{
+  font-size: 10px;
+}
+.text-xxl{
+  font-size: 30px;
+}
+.dropdown-list {
+  max-height: 160px; 
+  overflow-y: auto; 
+}
+.container-covers-all {
+  width: 100%; /* Ensure the container fills the entire width of the screen */
+  height: 100vh; /* Set the container height to 100% of the viewport height */
+  padding: 0; /* Remove any default padding */
+  margin: 0; /* Remove any default margin */
+}
