@@ -21,7 +21,7 @@ methods:{
 writeUserData:function() {
     const reference = ref(db, "users/user2/");
     set(reference,{
-        username:"Ismael"
+        username:"Marlon"
     });
 }
 }
