@@ -37,7 +37,7 @@
                         />
                     </svg>
                 </div>
-                <button v-if="showClearButton" @click="resetSearch()" class="absolute inset-y-1 right-0 flex items-center pr-3">
+                <button v-if="searchQuery" @click="resetSearch()" class="absolute inset-y-1 right-0 flex items-center pr-3">
                     <svg width="15px" height="15px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="none">
                         <path stroke="#535358" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.5 23.5l15-15M23.5 23.5l-15-15"/>
                     </svg>
@@ -138,7 +138,7 @@
             if (this.dateValue) {
                 this.dateValue =  DateTime.fromISO(this.dateValue).toFormat('M/d/yy');
                 filteredTickets = filteredTickets.filter(ticket => {
-                    console.log("ticket.date: "+ticket.date);
+                    // console.log("ticket.date: "+ticket.date);
                     ticket.date === this.dateValue
                 });
             }
@@ -161,6 +161,7 @@
         resetSearch() {
             this.$refs.searchBar.value = '';
             this.table_tickets = this.tickets_from_db;
+            this.searchQuery = '';
         },
         receiveDataFromRequester(data) {
             this.requester = data;
@@ -177,7 +178,7 @@
     },
     computed: {
         showClearButton() {
-            return this.searchQuery !== '';
+            return this.searchQuery != '';
         }
     },
     data() {
