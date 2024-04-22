@@ -12,7 +12,7 @@
   <!-- TICKET -->
           <div class="bg-white h-52 flex flex-col border border-black">
             <div class="bg-custom-700 h-16 flex items-center justify-between px-4 text-white">
-              <div>HYGIENE</div>
+              <div v-html="subject"></div>
               <div class="relative ">
                 STATUS
                 <button @click="toggleDropdown('status')" class="text-black border px-4 bg-white h-10 focus:outline-none focus:border-blue-500">
@@ -41,7 +41,8 @@
                 class="p-4 flex-1 resize-none w-full border h-auto focus:ring-blue-500 focus:border-blue-500 lg:text-lg"
                 placeholder="Enter a response..."
                 disabled
-              >asdas</textarea>
+                v-html="description"
+              ></textarea>
             </div>
           </div>
   <!-- RESPONSE -->
@@ -76,7 +77,7 @@
                 id="description"
                 class="p-4 flex-1 resize-none w-full border h-auto focus:ring-blue-500 focus:border-blue-500 lg:text-lg"
                 placeholder="Enter description..."
-              >asdas</textarea>
+              ></textarea>
             </div>
             
           </div>
@@ -113,8 +114,8 @@
                 </svg>
               </span>
               <span class="flex flex-col w-2/3">
-                <span>CARLA RAMOS</span>
-                <span class="text-xxs milkstore04-text">ASSISTANT</span>
+                <span v-html="requester"></span>
+                <span v-html="department"class="text-xxs milkstore04-text"></span>
               </span>
 
             </div>
@@ -140,20 +141,20 @@
                 <span>PRIORITY</span>
                 <div class="flex flex-row gap-2 items-center">
                   <span class="dot"></span>
-                  <span>HIGH</span>
+                  <span v-html="priority"></span>
                 </div>
               </div>
               <div class="flex flex-col">
                 <span>RESPONSE DUE DATE</span>
                 <div class="flex flex-row gap-2 items-center">
-                  <span>12/03/2024</span>
+                  <span v-html="date"></span>
                 </div>
               </div>
 
               <div class="flex flex-col">
                 <span>STATUS</span>
                 <div class="flex flex-row gap-2 items-center">
-                  <span class="text-blue-400">OPEN</span>
+                  <span v-html="status" class="text-blue-400"></span>
                 </div>
               </div>
 
@@ -241,14 +242,22 @@
 
 <script>
 import MainTitleComp from '../components/MainTitleComp.vue';
-
-
+import { db } from "../firebaseConfig.js";
+import { ref, set, child, onValue, get} from "firebase/database";
+const reference = ref(db, "users/user1/tickets/-Nw3JiA-kmSVgoAozvod/");
 export default {
   components: {
     MainTitleComp
   },
   data() {
     return {
+      requester: '',
+      date: '',
+      department: '',
+      description: '',
+      priority: '',
+      status: '',
+      subject: '',
       isOpen: false,
       isOpenEmp: false,
       selectedOption: null,
@@ -258,6 +267,17 @@ export default {
     };
   },
   methods: {
+    readTicket(){
+      get(reference).then((snapshot) => { 
+        this.requester = snapshot.val().ticket_author;
+        this.date = snapshot.val().ticket_date.slice(0,15); 
+        this.department = snapshot.val().ticket_department + " Department";
+        this.description = snapshot.val().ticket_description;
+        this.priority = snapshot.val().ticket_priority;
+        this.status = snapshot.val().ticket_status;
+        this.subject = snapshot.val().ticket_subject;
+      })
+    },
     toggleDropdown(type) {
       if(type == "status"){
         this.isOpen = !this.isOpen;
@@ -276,6 +296,9 @@ export default {
         this.isOpenEmp = false;
       }
     }
-  }
+  },
+  beforeMount() {
+   this.readTicket()
+},
 };
 </script>
