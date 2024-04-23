@@ -10,20 +10,12 @@
 
                 <label for="department" class="text-xxl col-span-1 pt-2">DEPARTMENT</label>
                 <div class="col-span-2">
-                  <select id="department" v-model="department" class="milkstore04-text text-sm">
-    <option value="IT">IT</option>
-    <option value="HR">HR</option>
-    <option value="CS">CS</option>
-</select>
+                  <DropboxComp id="department_drop" :has_clear_button="false" :default_caption="''" :text_type="'milkstore04-text text-sm'" :options="departments" @input="handleSelectedDepartment" />
                 </div>
 
                 <label for="priority" class="text-xxl col-span-1 pt-2">PRIORITY</label>
                 <div class="col-span-2">
-                  <select id="priority" v-model="priority" class="milkstore04-text text-sm">
-    <option value="HIGH">HIGH</option>
-    <option value="MEDIUM">MEDIUM</option>
-    <option value="LOW">LOW</option>
-</select>
+                  <DropboxComp id="priority_drop" :has_clear_button="false" :default_caption="''" :text_type="'milkstore04-text text-sm'" :options="priorities" @input="handleSelectedPriority" />
                 </div> 
 
                 <div class="flex flex-col">
@@ -83,8 +75,9 @@ export default {
       selectedFile: '',
       isFileObtained: '',
       selectedFileName: '',
-
-    };
+      priorities: ['HIGH','LOW','MEDIUM' ],
+      departments: ['IT','HR','FRONT DESK', 'BARISTA' ]
+    }
   },
   methods: {
     submitForm: async () => {
