@@ -5,7 +5,7 @@
 <!-- <div class="flex items-center flex-row h-16 justify-between mt-6 mb-6"> -->
       <MainTitleComp :title="'Ticket View'"/>
       <!-- TICKET NUMBER -->
-      <div class="text-card flex justify-center">TICKET NUMBER: #3230</div>
+      <div class="text-card flex justify-center">Ticket Code: {{ useRoute().params.id.slice(1,6) }}</div>
       <div class="flex w-full flex-row gap-4">
         <div class="flex flex-col main-content w-2/3 gap-4">
 
@@ -287,7 +287,6 @@ export default {
         this.isOpen = false;
       }
     },
-    
     selectOption(option , type) {
       if(type == "status"){
         this.selectedOption = option;

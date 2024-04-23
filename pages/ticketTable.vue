@@ -108,6 +108,7 @@ import { db } from "../firebaseConfig.js";
 import { ref, set, child, onValue, get } from "firebase/database";
 
 const reference = ref(db, "tickets/");
+const userRef = ref(db, "users/");
 
 export default {
     components: {
@@ -116,11 +117,26 @@ export default {
         DatePicker
     },
     methods: {
+        readUsers(){
+            get(userRef).then((snapshot) => {
+                this.JSONUser = snapshot.val();
+                this.readUserProp(this.JSONUser)
+            })
+        },
         readTickets() {
             get(reference).then((snapshot) => {
                 this.JSONData = snapshot.val();
                 this.readProperties(this.JSONData)
             })
+        },
+        readUserProp(data){
+            for (const userId in data) {
+                
+                if (Object.hasOwnProperty.call(data, userId)) {
+                    const user = data[userId];
+                    this.requester_options.push(user.full_name)
+                }
+            };
         },
         readProperties(data){
             for (const ticketId in data) {
@@ -209,13 +225,14 @@ export default {
     },
     data() {
         return {
+            JSONUser:[],
             JSONData: [],
             searchQuery: '',
             requester: '',
             priority: '',
             dateValue: '',
             priorities_options: ['LOW', 'MEDIUM', 'HIGH'],
-            requester_options: ['Pedro', 'Eduardo', 'Juan', 'Gabriela', 'Juan', 'Gabriela', 'Juan', 'Gabriela', 'Juan', 'Gabriela', 'Juan', 'Gabriela', 'Juan', 'Gabriela'],
+            requester_options: [],
             table_tickets: [],
             tickets_from_db: [],
 
@@ -224,7 +241,7 @@ export default {
     },
     beforeMount() {
         this.readTickets()
-        this.readProperties()
+        this.readUsers()
     },
 };
 </script>
