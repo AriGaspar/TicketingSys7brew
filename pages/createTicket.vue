@@ -80,15 +80,15 @@ export default {
   },
   methods: {
     submitForm: async function() {
-      const ticketDate = new Date();
-      const month = ticketDate.getMonth() + 1; 
-      const day = ticketDate.getDate();
-      const year = ticketDate.getFullYear() % 100; 
-      const formattedDate = `${month}/${day}/${year}`;
+      // const ticketDate = new Date();
+      // const month = ticketDate.getMonth() + 1; 
+      // const day = ticketDate.getDate();
+      // const year = ticketDate.getFullYear() % 100; 
+      // const formattedDate = `${month}/${day}/${year}`;
       const reference = ref(db);
       push(child(reference, "tickets"),{
         ticket_author: "Marlon Gaitan",
-        ticket_date: formattedDate,
+        ticket_date: Date(),
         ticket_subject:this.subject,
         ticket_department:this.department,
         ticket_description:this.description,
