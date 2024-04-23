@@ -88,7 +88,7 @@ export default {
   },
   methods: {
     submitForm: async () => {
-      const reference = ref(db, "users/user1/");
+      const reference = ref(db);
       push(child(reference,"tickets"),{
         ticket_author: "Marlon Gaitan",
         ticket_date: Date(),

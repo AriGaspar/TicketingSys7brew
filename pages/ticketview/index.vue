@@ -226,7 +226,7 @@
   </template>
 
 <style lang="scss">
-@import '../src/assets/scss/fonts.scss';
+@import '../../src/assets/scss/fonts.scss';
 .main-title{
     font-family: 'Magneton';
     font-size: 90px;
@@ -235,16 +235,16 @@
 </style>
 
 <style lang="css">
-  @import "../src/assets/css/general-styles.css";
+  @import "../../src/assets/css/general-styles.css";
   
 
 </style>
 
 <script>
-import MainTitleComp from '../components/MainTitleComp.vue';
-import { db } from "../firebaseConfig.js";
+import MainTitleComp from '../../components/MainTitleComp.vue';
+import { db } from "../../firebaseConfig.js";
 import { ref, set, child, onValue, get} from "firebase/database";
-const reference = ref(db, "users/user1/tickets/-Nw3JiA-kmSVgoAozvod/");
+const reference = ref(db, "tickets/-Nw6BYSMTBLmKi5z-6bF/");
 export default {
   components: {
     MainTitleComp

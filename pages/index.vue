@@ -14,8 +14,7 @@
 </template>
 <script>
 import { db } from "../firebaseConfig.js"
-import axios from 'axios'
-import { getDatabase, ref, set } from "firebase/database";
+import { ref, set } from "firebase/database";
 export default{
 methods:{
 writeUserData:function() {
