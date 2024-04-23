@@ -2,7 +2,7 @@
 
     <div class="flex items-center flex-row h-16 justify-between mt-6 mb-6">
         <h1 class="text-3xl main-title">{{ title }}</h1>
-        <button class="bg-custom-red-wine milkstore-text text-xl w-36 h-15 hover:bg-red-500 text-white font-bold py-2 px-4 inline-flex items-center justify-center">
+        <button @click="goBack" class="bg-custom-red-wine milkstore-text text-xl w-36 h-15 hover:bg-red-500 text-white font-bold py-2 px-4 inline-flex items-center justify-center">
             <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
                 width="20px" height="20px" viewBox="0 0 156.199 156.199"
                 xml:space="preserve">
@@ -12,7 +12,7 @@
                         v11.711h102.496c29.613,0,53.703-24.09,53.703-53.703C156.199,69.293,132.109,45.204,102.496,45.204z"/>
                 </g>
             </svg>
-            <span class="pl-2" @click="goBack">Return</span>
+            <span class="pl-2">Return</span>
         </button>
     </div>
 

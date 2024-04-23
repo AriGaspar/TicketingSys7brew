@@ -89,7 +89,7 @@
           </div>
 
         </div>
-<!-- SIDEBAR -->
+<!-- RIGHT SIDEBAR -->
         <div class="flex flex-col text-white w-auto milkstore-text gap-4 justify-center items-end" >
           <!-- REQUESTER INFO -->
           <div id="requester-info" class="p-2 h-25 w-2/3 rounded bg-custom-700 flex flex-col text-lg">
@@ -140,7 +140,7 @@
               <div class="flex flex-col">
                 <span>PRIORITY</span>
                 <div class="flex flex-row gap-2 items-center">
-                  <span class="dot"></span>
+                  <span :class="['dot', chooseTheDotColor(priority)]" ></span>
                   <span v-html="priority"></span>
                 </div>
               </div>
@@ -154,7 +154,8 @@
               <div class="flex flex-col">
                 <span>STATUS</span>
                 <div class="flex flex-row gap-2 items-center">
-                  <span v-html="status" class="text-blue-400"></span>
+                  <span v-if="status.toLocaleLowerCase() == 'pending' || status.toLocaleLowerCase() == 'open'" v-html="status.toLocaleLowerCase()" class="text-blue-400"></span>
+                  <span v-if="status.toLocaleLowerCase() == 'closed'" v-html="status.toLocaleLowerCase()" class="text-red-400"></span>
                 </div>
               </div>
 
@@ -244,6 +245,7 @@
 import MainTitleComp from '../../components/MainTitleComp.vue';
 import { db } from "../../firebaseConfig.js";
 import { ref, set, child, onValue, get} from "firebase/database";
+import { DateTime } from 'luxon';
 
 export default {
   components: {
@@ -269,24 +271,25 @@ export default {
   },
   methods: {
     readUsers(userRef){
-            get(userRef).then((snapshot) => {
-                this.JSONUser = snapshot.val();
-                this.readUserProp(this.JSONUser)
-            })
-        },
-        readUserProp(data){
-            for (const userId in data) {
-                
-                if (Object.hasOwnProperty.call(data, userId)) {
-                    const user = data[userId];
-                    this.employees.push(user.full_name)
-                }
-            };
-        },
+        get(userRef).then((snapshot) => {
+            this.JSONUser = snapshot.val();
+            this.readUserProp(this.JSONUser)
+        })
+    },
+    readUserProp(data){
+        for (const userId in data) {
+            
+            if (Object.hasOwnProperty.call(data, userId)) {
+                const user = data[userId];
+                this.employees.push(user.full_name)
+            }
+        };
+    },
     readTicket(reference){
       get(reference).then((snapshot) => { 
+        const formattedDate = DateTime.fromFormat(snapshot.val().ticket_date.slice(0,15), 'ccc MMM dd yyyy').toFormat('M/d/yy');
         this.requester = snapshot.val().ticket_author;
-        this.date = snapshot.val().ticket_date.slice(0,15); 
+        this.date = formattedDate; 
         this.department = snapshot.val().ticket_department + " Department";
         this.description = snapshot.val().ticket_description;
         this.priority = snapshot.val().ticket_priority;
@@ -310,6 +313,16 @@ export default {
       }else{
         this.selectedEmp = option;
         this.isOpenEmp = false;
+      }
+    },
+    chooseTheDotColor(priority) {
+      switch (priority.toLocaleLowerCase().trim()) {
+        case "high":
+          return "";
+        case "medium":
+          return "dot-yellow";
+        case "low":
+          return "dot-green";
       }
     }
   },

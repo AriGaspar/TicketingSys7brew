@@ -21,6 +21,13 @@
   margin: 0;
   padding: 0;
 }
+.dot-green {
+  background-color: rgb(93, 188, 126); /* Change the color to blue */
+}
+.dot-yellow {
+  background-color: rgb(231, 177, 29); /* Change the color to blue */
+}
+
 
 .main-content > *{
   font-family: 'Milkstore04';

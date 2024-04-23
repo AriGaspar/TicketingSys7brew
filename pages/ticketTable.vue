@@ -79,7 +79,7 @@
             </thead>
             <tbody class="milkstore04-text text-base">
                 <tr v-for="(ticket, index) in table_tickets" :key="index">
-                    <td class="border-custom-red-wine border-r w-2/6 py-1 pl-10"><NuxtLink  :to="`/ticketview/${ticket.id}`">{{ ticket.subject }}</NuxtLink></td>
+                    <td class="border-custom-red-wine border-r w-2/6 py-1 pl-8 hover:text-red-500"><NuxtLink  :to="`/ticketview/${ticket.id}`">{{ shortenText(ticket.subject) }}</NuxtLink></td>
                     <td class="border-custom-red-wine border-r w-1/4 text-center">{{ ticket.requester }}</td>
                     <td class="border-custom-red-wine border-r text-center px-10">{{ ticket.priority }}</td>
                     <td class="border-custom-red-wine border-r text-center px-10">{{ ticket.status }}</td>
@@ -198,7 +198,10 @@ export default {
         },
         goToPage(id) {
             this.$router.push({name: 'ticketview/', params: {id: "wadaswd"}});
-    }
+        },
+        shortenText(text , limit = 21) {
+            return (text.length < limit)? text :text.substring(0,limit-3)+'...';
+        }
     },
     created() {
         this.table_tickets = this.tickets_from_db;

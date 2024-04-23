@@ -73,7 +73,7 @@ export default {
         },
         handleClickOutside(event) {
             // Close dropdown if clicked outside of it
-            if (!this.reference.dropdownList.contains(event.target)) {
+            if (!this.$refs.dropdownList.contains(event.target)) {
                 this.isOpen = false;
             }
         },
