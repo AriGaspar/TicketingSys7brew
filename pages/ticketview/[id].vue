@@ -46,6 +46,7 @@
             </div>
           </div>
   <!-- RESPONSE -->
+
           <div class="bg-white h-52 flex flex-col border border-black">
             <div class="bg-custom-red-wine h-16 flex items-center justify-between px-4 text-white">
               <div>RESPONSE</div>
@@ -65,29 +66,31 @@
                 <div v-if="isOpenEmp" class="text-black absolute z-10 mt-2 w-48 bg-white border border-gray-300 rounded-md shadow-lg">
                   <ul>
                     <li v-for="(e, index) in employees" :key="index" @click="selectOption(e , 'emp')" class="py-2 px-4 cursor-pointer hover:bg-gray-100">
-                      {{ e }}
+                      {{ e.name }}
                     </li>
                   </ul>
                 </div>
               </div>
             </div>  
-            
+               
             <div class="h-full flex flex-col">
               <textarea
-                id="description"
+              v-model="response"
+                id="response"
                 class="p-4 flex-1 resize-none w-full border h-auto focus:ring-blue-500 focus:border-blue-500 lg:text-lg"
-                placeholder="Enter description..."
+                placeholder="Enter response..."
               ></textarea>
             </div>
             
           </div>
   <!-- SUBMIT BUTTON -->
+  
           <div class="flex justify-end">
-            <button class="bg-custom-red-wine milkstore-text text-xl w-36 h-15 hover:bg-red-500 text-white font-bold py-2 px-4 items-center justify-center">
+            <p>xd: {{ this.userpath }}</p>
+            <button @click="submitForm" type="submit" class="bg-custom-red-wine milkstore-text text-xl w-36 h-15 hover:bg-red-500 text-white font-bold py-2 px-4 items-center justify-center">
               <span class="pl-2">SUBMIT</span>
             </button>
           </div>
-
         </div>
 <!-- RIGHT SIDEBAR -->
         <div class="flex flex-col text-white w-auto milkstore-text gap-4 justify-center items-end" >
@@ -250,7 +253,7 @@
 <script>
 import MainTitleComp from '../../components/MainTitleComp.vue';
 import { db } from "../../firebaseConfig.js";
-import { ref, set, child, onValue, get} from "firebase/database";
+import { ref, push, child, set, update, get} from "firebase/database";
 import { DateTime } from 'luxon';
 import '@fortawesome/fontawesome-free/css/all.css';
 
@@ -261,6 +264,8 @@ export default {
   data() {
     return {
         JSONUser:[],
+        response:'',
+        userpath: '',
       requester: '',
       date: '',
       department: '',
@@ -278,21 +283,40 @@ export default {
     };
   },
   methods: {
+    submitForm: async function() {
+        const updates = {};
+        console.log(ref(db),"users/"+this.userpath+"/tickets_assigned");
+        set(child(ref(db),"users/"+this.userpath+"/tickets_assigned/"+ useRoute().params.id), {
+            ticket_author: this.requester,
+            ticket_date: this.date,
+            ticket_subject:this.subject,
+            ticket_department:this.department,
+            ticket_description:this.description,
+            ticket_priority:this.priority,
+            ticket_status: this.status,
+            ticket_request: this.response
+        });
+        console.log(ref(db),"tickets/"+useRoute().params.id)
+        update(child(ref(db),"tickets/"+useRoute().params.id+"/"), {
+            ticket_user_assigned: this.selectedEmp,
+            ticket_reply: this.response
+        });
+    },
     readUsers(userRef){
-        get(userRef).then((snapshot) => {
-            this.JSONUser = snapshot.val();
-            this.readUserProp(this.JSONUser)
-        })
-    },
-    readUserProp(data){
-        for (const userId in data) {
-            
-            if (Object.hasOwnProperty.call(data, userId)) {
-                const user = data[userId];
-                this.employees.push(user.full_name)
-            }
-        };
-    },
+            get(userRef).then((snapshot) => {
+                this.JSONUser = snapshot.val();
+                this.readUserProp(this.JSONUser)
+            })
+        },
+        readUserProp(data){
+            for (const userId in data) {
+                
+                if (Object.hasOwnProperty.call(data, userId)) {
+                    const user = data[userId];
+                    this.employees.push({id: userId , name: user.full_name})
+                }
+            };
+        },
     readTicket(reference){
       get(reference).then((snapshot) => { 
         const formattedDate = DateTime.fromFormat(snapshot.val().ticket_date.slice(0,15), 'ccc MMM dd yyyy').toFormat('M/d/yy');
@@ -316,10 +340,12 @@ export default {
     },
     selectOption(option , type) {
       if(type == "status"){
-        this.selectedOption = option;
+        this.selectedOption = option.name;
+        this.userpath = option.id;
         this.isOpen = false;
       }else{
-        this.selectedEmp = option;
+        this.selectedEmp = option.name;
+        this.userpath = option.id;
         this.isOpenEmp = false;
       }
     },
