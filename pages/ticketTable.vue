@@ -79,7 +79,7 @@
             </thead>
             <tbody class="milkstore04-text text-base">
                 <tr v-for="(ticket, index) in table_tickets" :key="index">
-                    <td class="border-custom-red-wine border-r w-2/6 py-1 pl-10"><NuxtLink  :to="`/ticketview/${ticket.id}`">{{ ticket.subject }}</NuxtLink></td>
+                    <td class="border-custom-red-wine border-r w-2/6 py-1 pl-8 hover:text-red-500"><NuxtLink  :to="`/ticketview/${ticket.id}`">{{ shortenText(ticket.subject) }}</NuxtLink></td>
                     <td class="border-custom-red-wine border-r w-1/4 text-center">{{ ticket.requester }}</td>
                     <td class="border-custom-red-wine border-r text-center px-10">{{ ticket.priority }}</td>
                     <td class="border-custom-red-wine border-r text-center px-10">{{ ticket.status }}</td>
@@ -140,13 +140,14 @@ export default {
                 
                 if (Object.hasOwnProperty.call(data, ticketId)) {
                     const ticket = data[ticketId];
+                    const formattedDate = DateTime.fromFormat(ticket.ticket_date.slice(0,15), 'ccc MMM dd yyyy').toFormat('M/d/yy');
                     this.tickets_from_db.push({
                         id: ticketId,
                         subject: ticket.ticket_subject,
                         requester: ticket.ticket_author,
                         priority: ticket.ticket_priority,
                         status: ticket.ticket_status,
-                        date: ticket.ticket_date.slice(0,15),
+                        date: formattedDate,
                         assigned_to: ticket.ticket_user_assigned
                     })
                 }
@@ -172,10 +173,7 @@ export default {
 
             if (this.dateValue) {
                 this.dateValue = DateTime.fromISO(this.dateValue).toFormat('M/d/yy');
-                filteredTickets = filteredTickets.filter(ticket => {
-                    console.log("ticket.date: ."+ticket.date+'.');
-                    ticket.date == this.dateValue
-                });
+                filteredTickets = filteredTickets.filter(ticket => ticket.date == this.dateValue);
             }
             this.table_tickets = filteredTickets;
 
@@ -200,7 +198,10 @@ export default {
         },
         goToPage(id) {
             this.$router.push({name: 'ticketview/', params: {id: "wadaswd"}});
-    }
+        },
+        shortenText(text , limit = 21) {
+            return (text.length < limit)? text :text.substring(0,limit-3)+'...';
+        }
     },
     created() {
         this.table_tickets = this.tickets_from_db;
