@@ -163,6 +163,12 @@
                 <span>SOLVE BY</span>
                 <div class="flex flex-row gap-2 items-center">
                   <span>12/03/2024</span>
+                  <div class="relative">
+                    <input ref="datePicker" type="date" v-model="selectedDate" class="h-1 w-1">
+                    <button @click="openDatePicker">
+                      <i class="fas fa-calendar" ></i>
+                    </button>
+                  </div>
                 </div>
               </div>
 
@@ -246,6 +252,7 @@ import MainTitleComp from '../../components/MainTitleComp.vue';
 import { db } from "../../firebaseConfig.js";
 import { ref, set, child, onValue, get} from "firebase/database";
 import { DateTime } from 'luxon';
+import '@fortawesome/fontawesome-free/css/all.css';
 
 export default {
   components: {
@@ -265,6 +272,7 @@ export default {
       isOpenEmp: false,
       selectedOption: null,
       selectedEmp: null,
+      selectedDate: '',
       options: ['Open', 'Closed', 'Pending'], // Add your dropdown options here
       employees: [] // Add your dropdown options here
     };
@@ -324,6 +332,10 @@ export default {
         case "low":
           return "dot-green";
       }
+    },
+    openDatePicker() {
+      this.$refs.datePicker.click();
+      console.log(this.selectedDate);
     }
   },
   beforeMount() {
