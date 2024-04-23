@@ -3,8 +3,7 @@
         <!-- TITLE -->
         <div class="flex items-center flex-row h-16 justify-between mt-6 mb-6">
             <h1 class="text-3xl main-title">Tickets</h1>
-            <button
-                class="bg-custom-red-wine milkstore-text text-xl w-36 h-15 hover:bg-red-500 text-white font-bold py-2 px-4 inline-flex items-center justify-center">
+            <router-link to="/createTicket" class="bg-custom-red-wine milkstore-text text-xl w-36 h-15 hover:bg-red-500 text-white font-bold py-2 px-4 inline-flex items-center justify-center">
                 <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M12.75 9C12.75 8.58579 12.4142 8.25 12 8.25C11.5858 8.25 11.25 8.58579 11.25 9L11.25 11.25H9C8.58579 11.25 8.25 11.5858 8.25 12C8.25 12.4142 8.58579 12.75 9 12.75H11.25V15C11.25 15.4142 11.5858 15.75 12 15.75C12.4142 15.75 12.75 15.4142 12.75 15L12.75 12.75H15C15.4142 12.75 15.75 12.4142 15.75 12C15.75 11.5858 15.4142 11.25 15 11.25H12.75V9Z"
@@ -14,7 +13,7 @@
                         fill="#ffffff" />
                 </svg>
                 <span class="pl-2">Create Ticket</span>
-            </button>
+            </router-link to="/createTicket">
         </div>
         <!-- SEARCH BAR -->
         <div class="flex justify-center items-center">
@@ -41,15 +40,13 @@
         <div class="flex flex-row justify-center gap-4 py-4 items-center w-full">
             FILTER BY:
             <div class="w-40">
-                <DropboxComp id="requester" :default_caption="'REQUESTER'" :text_type="'milkstore04-text text-sm'"
-                    :options="requester_options" @input="receiveDataFromRequester" />
+                <DropboxComp id="requester" :has_clear_button="true" :default_caption="'REQUESTER'" :text_type="'milkstore04-text text-sm'" :options="requester_options" @input="receiveDataFromRequester" />
                 <span class="flex milkstore04-text text-xxs justify-center">
                     <!-- Requester -->
                 </span>
             </div>
             <div class="w-40">
-                <DropboxComp id="priority" :default_caption="'PRIORITY'" :text_type="'milkstore04-text text-sm'"
-                    :options="priorities_options" @input="receiveDataFromPriority" />
+                <DropboxComp id="priority" :has_clear_button="true" :default_caption="'PRIORITY'" :text_type="'milkstore04-text text-sm'" :options="priorities_options" @input="receiveDataFromPriority" />
                 <span class="flex milkstore04-text text-xxs justify-center">
                     <!-- Priority -->
                 </span>
@@ -146,9 +143,8 @@ export default {
             this.table_tickets = fuse.search(query).map(({ item }) => item);
             // console.log(this.table_tickets);
         },
-        SearchByFilter() {
-            const keys = [];
-
+        SearchByFilter(){
+            
             let filteredTickets = this.tickets_from_db;
 
             if (this.requester) {
@@ -161,25 +157,16 @@ export default {
             if (this.dateValue) {
                 this.dateValue = DateTime.fromISO(this.dateValue).toFormat('M/d/yy');
                 filteredTickets = filteredTickets.filter(ticket => {
-                    // console.log("ticket.date: "+ticket.date);
-                    ticket.date === this.dateValue
+                    console.log("ticket.date: ."+ticket.date+'.');
+                    ticket.date == this.dateValue
                 });
             }
             this.table_tickets = filteredTickets;
 
-            // if (this.requester) keys.push('requester');
-            // if (this.priority) keys.push('priority');
-            // if (this.dateValue) keys.push('date');
-
-            // const fuse = new Fuse(this.tickets_from_db, {keys: keys});
-            // this.table_tickets = (keys.length > 0)?fuse.search('A').map(({ item }) => item):this.tickets_from_db;
             console.log(this.table_tickets);
-            console.log("keys: " + keys);
             console.log(this.requester);
             console.log(this.priority);
             console.log(this.dateValue);
-
-            // this.searchQuery = query;
         },
         resetSearch() {
             this.$refs.searchBar.value = '';
