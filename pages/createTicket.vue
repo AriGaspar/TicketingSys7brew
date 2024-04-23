@@ -94,8 +94,8 @@ export default {
         ticket_description:this.description,
         ticket_priority:this.priority,
         ticket_status: "Open",
-        ticket_reply:'None',
-        ticket_user_assigned:'None'
+        ticket_reply:null,
+        ticket_user_assigned:null
 
     });
     },
