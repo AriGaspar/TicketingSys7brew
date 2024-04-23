@@ -147,7 +147,7 @@ export default {
                         priority: ticket.ticket_priority,
                         status: ticket.ticket_status,
                         date: ticket.ticket_date.slice(0,15),
-                        assigned_to: 'Eduardo Carim'
+                        assigned_to: ticket.ticket_user_assigned
                     })
                 }
             };

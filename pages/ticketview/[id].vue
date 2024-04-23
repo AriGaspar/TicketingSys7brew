@@ -251,6 +251,7 @@ export default {
   },
   data() {
     return {
+        JSONUser:[],
       requester: '',
       date: '',
       department: '',
@@ -263,10 +264,25 @@ export default {
       selectedOption: null,
       selectedEmp: null,
       options: ['Open', 'Closed', 'Pending'], // Add your dropdown options here
-      employees: ['Pablo', 'Eduardo', 'John'] // Add your dropdown options here
+      employees: [] // Add your dropdown options here
     };
   },
   methods: {
+    readUsers(userRef){
+            get(userRef).then((snapshot) => {
+                this.JSONUser = snapshot.val();
+                this.readUserProp(this.JSONUser)
+            })
+        },
+        readUserProp(data){
+            for (const userId in data) {
+                
+                if (Object.hasOwnProperty.call(data, userId)) {
+                    const user = data[userId];
+                    this.employees.push(user.full_name)
+                }
+            };
+        },
     readTicket(reference){
       get(reference).then((snapshot) => { 
         this.requester = snapshot.val().ticket_author;
@@ -299,9 +315,9 @@ export default {
   },
   beforeMount() {
     const { id } = useRoute().params;
-    console.log(id)
     const reference = ref(db, "tickets/"+id+"/");
     this.readTicket(reference)
+    this.readUsers(ref(db, "users/"))
 },
 };
 </script>

@@ -251,6 +251,7 @@ export default {
   },
   data() {
     return {
+      JSONUser:[],
       requester: '',
       date: '',
       department: '',
@@ -263,7 +264,7 @@ export default {
       selectedOption: null,
       selectedEmp: null,
       options: ['Open', 'Closed', 'Pending'], // Add your dropdown options here
-      employees: ['Pablo', 'Eduardo', 'John'] // Add your dropdown options here
+      employees: [] // Add your dropdown options here
     };
   },
   methods: {

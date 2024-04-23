@@ -58,9 +58,8 @@ import { db } from "../firebaseConfig.js";
 import { getDatabase, ref, set, child, push, update } from "firebase/database";
 import MainTitleComp from '../components/MainTitleComp.vue';
 import DropboxComp from '../components/DropboxComp.vue';
-
+import { DateTime } from 'luxon';
 export default {
-
   name:'TicketCreation',
   components: {
     MainTitleComp,
@@ -80,16 +79,23 @@ export default {
     }
   },
   methods: {
-    submitForm: async () => {
+    submitForm: async function() {
+      const ticketDate = new Date();
+      const month = ticketDate.getMonth() + 1; 
+      const day = ticketDate.getDate();
+      const year = ticketDate.getFullYear() % 100; 
+      const formattedDate = `${month}/${day}/${year}`;
       const reference = ref(db);
-      push(child(reference,"tickets"),{
+      push(child(reference, "tickets"),{
         ticket_author: "Marlon Gaitan",
-        ticket_date: Date(),
-        ticket_subject:subject.value,
-        ticket_department:department.value,
-        ticket_description:description.value,
-        ticket_priority:priority.value,
-        ticket_status: "Pending"
+        ticket_date: formattedDate,
+        ticket_subject:this.subject,
+        ticket_department:this.department,
+        ticket_description:this.description,
+        ticket_priority:this.priority,
+        ticket_status: "Open",
+        ticket_reply:'None',
+        ticket_user_assigned:'None'
 
     });
     },
