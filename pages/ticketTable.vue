@@ -140,13 +140,14 @@ export default {
                 
                 if (Object.hasOwnProperty.call(data, ticketId)) {
                     const ticket = data[ticketId];
+                    const formattedDate = DateTime.fromFormat(ticket.ticket_date.slice(0,15), 'ccc MMM dd yyyy').toFormat('M/d/yy');
                     this.tickets_from_db.push({
                         id: ticketId,
                         subject: ticket.ticket_subject,
                         requester: ticket.ticket_author,
                         priority: ticket.ticket_priority,
                         status: ticket.ticket_status,
-                        date: ticket.ticket_date.slice(0,15),
+                        date: formattedDate,
                         assigned_to: ticket.ticket_user_assigned
                     })
                 }
@@ -172,10 +173,7 @@ export default {
 
             if (this.dateValue) {
                 this.dateValue = DateTime.fromISO(this.dateValue).toFormat('M/d/yy');
-                filteredTickets = filteredTickets.filter(ticket => {
-                    console.log("ticket.date: ."+ticket.date+'.');
-                    ticket.date == this.dateValue
-                });
+                filteredTickets = filteredTickets.filter(ticket => ticket.date == this.dateValue);
             }
             this.table_tickets = filteredTickets;
 
