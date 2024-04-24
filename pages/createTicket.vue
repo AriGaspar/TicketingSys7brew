@@ -15,7 +15,7 @@
         <div
           class="grid grid-cols-3 w-full px-32 justify-center gap-4 items-start"
         >
-          <label for="subject" class="text-xxl col-span-1 pt-2">SUBJECT</label>
+          <label for="subject" class="text-xxl col-span-1 pt-2 milkstore04-text">SUBJECT</label>
           <input
             v-model="subject"
             type="text"
@@ -25,7 +25,7 @@
             required
           />
 
-          <label for="department" class="text-xxl col-span-1 pt-2"
+          <label for="department" class="text-xxl col-span-1 pt-2 milkstore04-text"
             >DEPARTMENT</label
           >
           <div class="col-span-2">
@@ -39,7 +39,7 @@
             />
           </div>
 
-          <label for="priority" class="text-xxl col-span-1 pt-2"
+          <label for="priority" class="text-xxl col-span-1 pt-2 milkstore04-text"
             >PRIORITY</label
           >
           <div class="col-span-2">
@@ -54,7 +54,7 @@
           </div>
 
           <div class="flex flex-col">
-            <label for="description" class="text-xxl col-span-1 pt-2"
+            <label for="description" class="text-xxl col-span-1 pt-2 milkstore04-text text-sm"
               >DESCRIPTION</label
             >
             <span class="milkstore04-text text-sm">Please be detailed</span>
@@ -114,7 +114,7 @@
                     "
                   ></path>
                 </svg>
-                <p>{{ isFileObtained ? selectedFileName : "NO FILE" }}</p>
+                <p class="milkstore04-text text-sm">{{ isFileObtained ? selectedFileName : "NO FILE" }}</p>
               </button>
             </div>
           </div>

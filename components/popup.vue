@@ -2,7 +2,7 @@
 	<div class="popup">
 		<div class="popup-inner">
             <NuxtLink  to="/ticketTable">
-			<button class="popup-close" @click="TogglePopup()">
+			<button class="popup-close milkstore04-text" @click="TogglePopup()">
 				OPERATION SUCCESSFUL!  
                 GO BACK HOME
 			</button>
@@ -10,6 +10,12 @@
 		</div>
 	</div>
 </template>
+
+<style lang="css">
+  @import "../src/assets/css/general-styles.css";
+  
+
+</style>
 
 <script>
 export default {
