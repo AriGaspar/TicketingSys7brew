@@ -7,7 +7,7 @@
         class="flex flex-row max-[1000px]:w-[90vw] min-[1001px]:w-[90vw] items-center justify-between"
       >
         <h1
-          class=" dark:text-white tracking-wide pl-8 text-[12.5vh]"
+          class=" dark:text-white milkstore-text tracking-wide pl-8 text-[12.5vh]"
         >
           Dashboard
         </h1>
@@ -35,15 +35,15 @@
 
         <div class="grid grid-cols-5 w-full h-full grid-rows-2 gap-2">
           <div
-            class="col-start-3 row-start-1 p-4 dark:bg-black rounded-md shadow-lg flex flex-col justify-center items-center bg-white"
+            class="col-start-3 row-start-1 p-4 dark:bg-black rounded-md shadow-lg flex flex-col justify-around items-center bg-white"
           >
             <h1
-              class="text-black dark:text-white dark:text-whitetext-2xl tracking-wide milkstore-text"
+              class="text-black dark:text-white dark:text-whitetext-2xl p-4  text-xl tracking-wide milkstore-text"
             >
-              Tickets Created By You
+              Tickets With High Priority
             </h1>
-            <h1 class="text-red-500 text-6xl tracking-wide milkstore-text">
-              17
+            <h1 class="text-red-500 text-[100px] tracking-wide milkstore-text">
+              {{ t_priority }}
             </h1>
           </div>
           <client-only>
@@ -66,10 +66,10 @@
             <h1
               class="text-black dark:text-white dark:text-whitetext-2xl tracking-wide milkstore-text"
             >
-              Tickets Created By You
+              Tickets Closed
             </h1>
             <h1 class="text-red-500 text-6xl tracking-wide milkstore-text">
-              17
+              {{ t_closed}}
             </h1>
           </div>
           <div
@@ -90,10 +90,10 @@
             <h1
               class="text-black dark:text-white dark:text-whitetext-2xl tracking-wide milkstore-text"
             >
-              Tickets Created By You
+              IT Department Tickets
             </h1>
             <h1 class="text-red-500 text-6xl tracking-wide milkstore-text">
-              17
+              {{ t_dept }}
             </h1>
           </div>
 
@@ -105,106 +105,106 @@
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
                 <th scope="col" class="px-6 py-3">
-                    Product name
+                   Subject
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Color
+                   Requester
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Category
+                   Priority
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Price
+                    Status
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Action
+                    Date
                 </th>
             </tr>
         </thead>
         <tbody>
             <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Apple MacBook Pro 17"
+                 
                 </th>
                 <td class="px-6 py-4">
-                    Silver
+          
                 </td>
                 <td class="px-6 py-4">
-                    Laptop
+            
                 </td>
                 <td class="px-6 py-4">
-                    $2999
+                    
                 </td>
                 <td class="px-6 py-4">
-                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline"></a>
                 </td>
             </tr>
             <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Microsoft Surface Pro
+                  
                 </th>
                 <td class="px-6 py-4">
-                    White
+                 
                 </td>
                 <td class="px-6 py-4">
-                    Laptop PC
+               
                 </td>
                 <td class="px-6 py-4">
-                    $1999
+               
                 </td>
                 <td class="px-6 py-4">
-                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline"></a>
                 </td>
             </tr>
             <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Magic Mouse 2
+               x
                 </th>
                 <td class="px-6 py-4">
-                    Black
+                
                 </td>
                 <td class="px-6 py-4">
-                    Accessories
+             
                 </td>
                 <td class="px-6 py-4">
-                    $99
+             
                 </td>
                 <td class="px-6 py-4">
-                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline"></a>
                 </td>
             </tr>
             <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Google Pixel Phone
+               
                 </th>
                 <td class="px-6 py-4">
-                    Gray
+              
                 </td>
                 <td class="px-6 py-4">
-                    Phone
+              
                 </td>
                 <td class="px-6 py-4">
-                    $799
+                 
                 </td>
                 <td class="px-6 py-4">
-                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline"></a>
                 </td>
             </tr>
             <tr>
                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Apple Watch 5
+                 
                 </th>
                 <td class="px-6 py-4">
-                    Red
+                  
                 </td>
                 <td class="px-6 py-4">
-                    Wearables
+                
                 </td>
                 <td class="px-6 py-4">
-                    $999
+              
                 </td>
                 <td class="px-6 py-4">
-                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline"></a>
                 </td>
             </tr>
         </tbody>
@@ -236,32 +236,55 @@
 import { db } from "../firebaseConfig.js";
 import { getDatabase, ref, onValue } from "firebase/database";
 
-const count =0;
-const ticketref= ref(db,'tickets/');
-let t_created =0;
-const set_created=(value)=>{
-  t_created=value;
-}
+
 
 
 //Tickets  Created
+let count =0;
+let count_dept = 0;
+let count_priority=0;
+let count_status=0;
+const ticketref= ref(db,'tickets/');
+
+let t_created =0;
+let t_dept = 0;
+let t_priority=0;
+let t_closed=0;
 onValue(ticketref, (snapshot) => {
 snapshot.forEach((childSnapshot) => {
-    const childKey = childSnapshot.key;
-    const childData = childSnapshot.val();
-      console.log(childData['ticket_author']);
-    if(childData['ticket_author']==="Marlon Gaitan"){
-      console.log(count);
-      count++;
-   
-    }
-  
 
-  });
+    let childKey = childSnapshot.key;
+    let childData = childSnapshot.val();
+    if(childData['ticket_author']==="Marlon Gaitan"){
   
-   set_created(4);
+      count++;
+    }
+    if(childData['ticket_department']==="IT"){
+  
+      count_dept++;
+    }
+    if(childData['ticket_priority']==="HIGH"){
+  
+      count_priority++;
+    }
+    if(childData['ticket_status']==="Closed"){
+  
+      count_status++;
+    }
+     t_priority=count_priority;
+     t_created=count;
+     t_dept = count_dept;
+     t_closed = count_status;
+ 
+  });  
+  
+   count_priority=0;
+  count=0;
+   count_dept=0;
 },
 );
+
+
 
 
 const scoreboard = {
