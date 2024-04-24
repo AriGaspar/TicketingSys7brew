@@ -1,5 +1,8 @@
 <template>
+<div class="flex-row  h-screen flex">
+   <Menu />
     <div class="p-10 milkstore-text text-xl w-full">
+         
         <!-- TITLE -->
         <div class="flex items-center flex-row h-16 justify-between mt-6 mb-6">
             <h1 class="text-3xl main-title">Tickets</h1>
@@ -88,6 +91,7 @@
                 </tr>
             </tbody>
         </table>
+    </div>
     </div>
 </template>
 

@@ -1,18 +1,17 @@
 <template>
-  <!--Menu for Pc-->
   <div
-    class="bg-[#8A2432] group items-center h-[100svh] w-[80px] flex flex-col p-4"
+    class="bg-[#8A2432] group items-center max-[1000px]:h-[98vh] min-[1001px]:h-[100hw] w-[80px] flex flex-col p-4"
   >
     <!--Logo-->
     <img class="w-8 h-8" src="../src/assets/images/017Brew_Tertiary.png" />
     <!--Everything except for the logo-->
-    <div class="flex flex-col justify-between h-[100%]">
+    <div class="flex flex-col justify-between h-[95%]">
       <!--Menu Items-->
       <div
         class="mt-6 flex h-[20vh] w-10 flex-col items-center justify-between"
       >
         <!--Home-->
-        <NuxtLink to="/index_">
+        <NuxtLink to="/dashboard">
           <div class="flex justify-center flex-col items-center">
             <svg
               class="w-6 h-6 text-white"
@@ -29,34 +28,34 @@
                 clip-rule="evenodd"
               />
             </svg>
-            <a class="font-[Milkstore] tracking-wide text-white text-lg"
-              >Home</a
-            >
+            <a class="milkstore-text tracking-wide text-white text-lg">Home</a>
           </div>
         </NuxtLink>
         <!--Tickets-->
-        <div class="flex justify-center flex-col items-center">
-          <svg
-            class="w-6 h-6 text-white dark:text-white"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M18.5 12A2.5 2.5 0 0 1 21 9.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v2.5a2.5 2.5 0 0 1 0 5V17a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-2.5a2.5 2.5 0 0 1-2.5-2.5Z"
-            />
-          </svg>
-          <a class="font-[Milkstore] tracking-wide text-white text-lg"
-            >Tickets</a
-          >
-        </div>
+        <NuxtLink to="/ticketTable">
+          <div class="flex justify-center flex-col items-center">
+            <svg
+              class="w-6 h-6 text-white dark:text-white"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M18.5 12A2.5 2.5 0 0 1 21 9.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v2.5a2.5 2.5 0 0 1 0 5V17a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-2.5a2.5 2.5 0 0 1-2.5-2.5Z"
+              />
+            </svg>
+            <a class="milkstore-text tracking-wide text-white text-lg"
+              >Tickets</a
+            >
+          </div>
+        </NuxtLink>
         <!--Faqs-->
         <NuxtLink to="/FAQs">
           <div class="flex justify-center flex-col items-center">
@@ -78,33 +77,33 @@
               />
             </svg>
 
-            <a class="font-[Milkstore] tracking-wide text-white text-lg"
-              >FAQs</a
-            >
+            <a class="milkstore-text tracking-wide text-white text-lg">FAQs</a>
           </div>
         </NuxtLink>
       </div>
 
       <!--Bottom Menu-->
-      <div class="flex justify-between h-1/6 flex-col items-center">
+      <div class="flex justify-around h-1/6 w-10 flex-col items-center">
         <!--User Icon-->
-        <div class="flex justify-center flex-col items-center">
-          <svg
-            class="w-6 h-6 text-white"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            fill="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4h-4Z"
-              clip-rule="evenodd"
-            />
-          </svg>
-        </div>
+        <NuxtLink to="/profile">
+          <div class="flex justify-center flex-col items-center">
+            <svg
+              class="w-6 h-6 text-white"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4h-4Z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </div>
+        </NuxtLink>
         <!--Settings Icon-->
 
         <div>
@@ -113,7 +112,7 @@
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               fill="currentColor"
-              class="w-6 h-6"
+              class="w-6 mt-1 h-6"
             >
               <path
                 fill-rule="evenodd"
@@ -123,19 +122,25 @@
             </svg>
           </button>
         </div>
-        <div class="h-6 w-10">
-          <h1 class="text-2 text-white dark:text-black font-Milkstore">
+        <NuxtLink to="/">
+          <a class="text-md tracking-wide text-white milkstore-text">
             Log Out
-          </h1>
-        </div>
+          </a>
+        </NuxtLink>
       </div>
     </div>
   </div>
 </template>
 <script setup>
+import { db } from "../../firebaseConfig.js";
+import { useRouter } from "vue-router";
+import { ref, set, child, onValue, get } from "firebase/database";
+const reference = ref(db, "tickets/-Nw6BYSMTBLmKi5z-6bF/");
 const colorMode = useColorMode();
 const changeColor = () =>
   (colorMode.preference = colorMode.value === "light" ? "dark" : "light");
+
+//This needs to be changed
 </script>
 <script>
 export default {
