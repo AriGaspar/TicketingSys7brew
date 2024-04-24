@@ -69,7 +69,8 @@ export default {
   name:'TicketCreation',
   components: {
     MainTitleComp,
-    DropboxComp
+    DropboxComp,
+    Popup
   },
   setup () {
 		const popupTriggers = refer({
