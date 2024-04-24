@@ -36,18 +36,12 @@
                     <span class="pl-2">SUBMIT</span>
                   </button>
                   <div>
-                    <input type="file" ref="fileInput" style="display: none" @change="handleFileUpload">
+                    <input type="file" ref="fileInput" style="display: none" @change="handleFileUpload" accept="image/*"/>
                     <button @click="openFileExplorer" type="button" class="flex flex-row items-center milkstore04-text pr-4">
                       <svg v-if="!isFileObtained"  fill="#000000" width="20px" height="20px" viewBox="0 0 24 24" id="paper-clip-top-right" data-name="Flat Line" xmlns="http://www.w3.org/2000/svg" class="icon flat-line"><path id="primary" d="M5.23,8.73,9.18,4.78a6.1,6.1,0,0,1,8.61,0h0a6.09,6.09,0,0,1,0,8.6l-6.43,6.43a4,4,0,0,1-5.74,0h0a4.06,4.06,0,0,1,0-5.73l6.74-6.74a2,2,0,0,1,2.87,0h0a2,2,0,0,1,0,2.87l-7,7" style="fill: none; stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path></svg>
                       <p>{{ isFileObtained? selectedFileName:"NO FILE" }}</p>
                     </button>
-                    <!-- <p>Subject: {{ subject }}</p>
-                    <p>department: {{ department }}</p>
-                    <p>priority: {{ priority }}</p>
-                    <p>description: {{ description }}</p> -->
                   </div>
-                  <!-- <nuxt-link to="/tickettable">About</nuxt-link> -->
-                  <!-- <a href="/path/to/your/file.pdf" target="_blank">Open File</a> -->
                 </div>
             </div>
         </form>
@@ -138,7 +132,9 @@ export default {
         ticket_description: this.description,
         ticket_priority: this.priority,
         ticket_status: "Open",
-        ticket_file_link: downloadLink
+        ticket_file_link: downloadLink,
+        ticket_file_name: this.selectedFileName,
+        ticket_solved_by_date:""
       }).then(() => {
         console.log('Ticket saved successfully!');
       }).catch((error) => {

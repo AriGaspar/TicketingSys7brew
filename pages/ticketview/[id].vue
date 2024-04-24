@@ -10,21 +10,27 @@
 		</Popup>
       <MainTitleComp :title="'Ticket View'"/>
       <!-- TICKET NUMBER -->
-      <div class="text-card flex justify-center">Ticket Code: {{ useRoute().params.id.slice(1,6) }}</div>
-      <button @click="deleteTicket" class="bg-custom-red-wine milkstore-text text-xl w-36 h-15 hover:bg-red-500 text-white font-bold py-2 px-4 items-center justify-center">
-              <span class="pl-2">Delete Ticket</span>
+      <div class="flex flex-row justify-between">
+        <div class="text-card flex justify-center">Ticket Code: {{ useRoute().params.id.slice(1,6) }}</div>
+        <button @click="deleteTicket" class="flex flex-row bg-custom-700 milkstore-text text-xl h-15 hover:bg-red-700 text-white font-bold py-2 px-4 items-center justify-center">
+          <span class="pl-2">Delete</span>
+          <svg class="ml-2" width="22px" height="22px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="#000000">
+            <path stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.5 23.5l15-15M23.5 23.5l-15-15"/>
+          </svg>
         </button>
-      <div class="flex w-full flex-row gap-4">
+      </div>
+      <div class="flex w-full flex-row">
+<!-- TICKET -->
         <div class="flex flex-col main-content w-2/3 gap-4">
 
-  <!-- TICKET -->
           <div class="bg-white h-52 flex flex-col border border-black">
             <div class="bg-custom-700 h-16 flex items-center justify-between px-4 text-white">
-              <div v-html="subject"></div>
+              
+              <div :title="subject" v-html="shortenText(subject)"></div>
               <div class="relative ">
                 STATUS
                 <button @click="toggleDropdown('status')" class="text-black border px-4 bg-white h-10 focus:outline-none focus:border-blue-500">
-                  {{ selectedOption ? selectedOption : 'Select an option' }}
+                  {{ this.status ? this.status : 'Select' }}
                   <svg 
                   xmlns="http://www.w3.org/2000/svg" 
                   width="30" height="30" 
@@ -58,10 +64,11 @@
           <div class="bg-white h-52 flex flex-col border border-black">
             <div class="bg-custom-red-wine h-16 flex items-center justify-between px-4 text-white">
               <div>RESPONSE</div>
-              <div class="relative ">
+              <div class="flex flex-row items-center gap-4">
                 ASSIGN
+                <!-- <DropboxComp id="users" :has_clear_button="false" :default_caption="'Select'" :text_type="'milkstore04-text text-sm'" :options="formatNames(employees)" @input="handleSelectedDepartment" /> -->
                 <button @click="toggleDropdown('emp')" class="text-black border px-4 bg-white h-10 focus:outline-none focus:border-blue-500">
-                  {{ selectedEmp ? selectedEmp : 'Select an option' }}
+                  {{ selectedEmp ? selectedEmp : 'Select' }}
                   <svg 
                   xmlns="http://www.w3.org/2000/svg" 
                   width="30" height="30" 
@@ -80,7 +87,6 @@
                 </div>
               </div>
             </div>  
-               
             <div class="h-full flex flex-col">
               <textarea
               v-model="response"
@@ -89,23 +95,32 @@
                 placeholder="Enter Response"
               >{{ this.response }}</textarea>
             </div>
-            
           </div>
   <!-- SUBMIT BUTTON -->
-  
           <div class="flex justify-end">
+            <a :href="this.url" :download="this.filename" type="button" class="flex flex-row items-center milkstore04-text pr-4">
+              <svg  v-if="!this.url"  fill="#000000" width="20px" height="20px" viewBox="0 0 24 24" id="paper-clip-top-right" data-name="Flat Line" xmlns="http://www.w3.org/2000/svg" class="icon flat-line mr-2"><path id="primary" d="M5.23,8.73,9.18,4.78a6.1,6.1,0,0,1,8.61,0h0a6.09,6.09,0,0,1,0,8.6l-6.43,6.43a4,4,0,0,1-5.74,0h0a4.06,4.06,0,0,1,0-5.73l6.74-6.74a2,2,0,0,1,2.87,0h0a2,2,0,0,1,0,2.87l-7,7" style="fill: none; stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path></svg>
+              <!-- <button v-if="this.url" type="button" class="flex flex-row items-center hover:border-red-500">
+                <svg class="mr-2" width="20px" height="20px" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="#000000">
+                  <path stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.5 23.5l15-15M23.5 23.5l-15-15"/>
+                </svg>
+              </button> -->
+              <p>{{ this.url? this.fileName:"NO FILE" }}</p>
+            </a>
+            
             <button @click="submitForm" type="submit" class="bg-custom-red-wine milkstore-text text-xl w-36 h-15 hover:bg-red-500 text-white font-bold py-2 px-4 items-center justify-center">
               <span class="pl-2">SUBMIT</span>
             </button>
           </div>
         </div>
 <!-- RIGHT SIDEBAR -->
-        <div class="flex flex-col text-white w-auto milkstore-text gap-4 justify-center items-end" >
+        <div class="flex flex-col text-white w-auto milkstore-text gap-4 justify-center items-end text-lg" >
           <!-- REQUESTER INFO -->
-          <div id="requester-info" class="p-2 h-25 w-2/3 rounded bg-custom-700 flex flex-col text-lg">
+          <div id="requester-info" class="p-2 h-25 w-3/4 rounded bg-custom-700 flex flex-col text-lg">
             
             <div id="requester-header" class="flex flex-row justify-center ">
               <span class="pt-1 pl-3  w-1/3 justify-center">
+                
                 <svg width="50%" height="50%" viewBox="0 0 25 25" preserveAspectRatio="xMidYMid meet" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path fill-rule="evenodd" clip-rule="evenodd" d="M6 8C6 4.68629 8.68629 2 12 2C15.3137 2 18 4.68629 18 8C18 11.3137 15.3137 14 12 14C8.68629 14 6 11.3137 6 8Z" fill="#ffffff"/>
                   <path fill-rule="evenodd" clip-rule="evenodd" d="M5.43094 16.9025C7.05587 16.2213 9.2233 16 12 16C14.771 16 16.9351 16.2204 18.5586 16.8981C20.3012 17.6255 21.3708 18.8613 21.941 20.6587C22.1528 21.3267 21.6518 22 20.9592 22H3.03459C2.34482 22 1.84679 21.3297 2.0569 20.6654C2.62537 18.8681 3.69119 17.6318 5.43094 16.9025Z" fill="#ffffff"/>
@@ -118,10 +133,11 @@
             </div>
 
             <div id="requester-user" class="flex flex-row items-center">
-              <span class="w-1/3 flex justify-center ">
-                <svg width="65px" height="65px" viewBox="0 0 19 19" fill="#ffffff" xmlns="http://www.w3.org/2000/svg">
+              <span class="w-1/3 flex justify-center mb-2">
+                <!-- <svg width="65px" height="65px" viewBox="0 0 19 19" fill="#ffffff" xmlns="http://www.w3.org/2000/svg">
                   <path fill-rule="evenodd" clip-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8C0 11.54 2.29 14.53 5.47 15.59C5.87 15.66 6.02 15.42 6.02 15.21C6.02 15.02 6.01 14.39 6.01 13.72C4 14.09 3.48 13.23 3.32 12.78C3.23 12.55 2.84 11.84 2.5 11.65C2.22 11.5 1.82 11.13 2.49 11.12C3.12 11.11 3.57 11.7 3.72 11.94C4.44 13.15 5.59 12.81 6.05 12.6C6.12 12.08 6.33 11.73 6.56 11.53C4.78 11.33 2.92 10.64 2.92 7.58C2.92 6.71 3.23 5.99 3.74 5.43C3.66 5.23 3.38 4.41 3.82 3.31C3.82 3.31 4.49 3.1 6.02 4.13C6.66 3.95 7.34 3.86 8.02 3.86C8.7 3.86 9.38 3.95 10.02 4.13C11.55 3.09 12.22 3.31 12.22 3.31C12.66 4.41 12.38 5.23 12.3 5.43C12.81 5.99 13.12 6.7 13.12 7.58C13.12 10.65 11.25 11.33 9.47 11.53C9.76 11.78 10.01 12.26 10.01 13.01C10.01 14.08 10 14.94 10 15.21C10 15.42 10.15 15.67 10.55 15.59C13.71 14.53 16 11.53 16 8C16 3.58 12.42 0 8 0Z"  fill="#ffffff"/>
-                </svg>
+                </svg> -->
+                <img src="../../src/assets/images/7Brew_Tertiary_2.png" alt="" width="65px" height="65px">
               </span>
               <span class="flex flex-col w-2/3">
                 <span v-html="requester"></span>
@@ -132,7 +148,7 @@
 
           </div>
           <!-- TICKET INFO -->
-          <div id="ticket-info" class="h-auto w-2/3 bg-blue-200 bg-custom-700 rounded flex flex-col">
+          <div id="ticket-info" class="h-auto w-3/4 bg-blue-200 bg-custom-700 rounded flex flex-col">
             
             <div id="ticket-info-header" class="flex flex-row justify-center pt-3">
               <span class="pl-6 w-1/3 justify-center">
@@ -151,7 +167,7 @@
                 <span>PRIORITY</span>
                 <div class="flex flex-row gap-2 items-center">
                   <span :class="['dot', chooseTheDotColor(priority)]" ></span>
-                  <span v-html="priority"></span>
+                  <button @click="switchBetweenPriorities">{{ this.priority }}</button>
                 </div>
               </div>
               <div class="flex flex-col">
@@ -172,13 +188,13 @@
               <div class="flex flex-col">
                 <span>SOLVE BY</span>
                 <div class="flex flex-row gap-2 items-center">
-                  <span>12/03/2024</span>
-                  <div class="relative">
+                  <span>{{ this.solved_by_date }}</span>
+                  <i class="fas fa-calendar" ></i>
+                  <!-- <div class="relative">
                     <input ref="datePicker" type="date" v-model="selectedDate" class="h-1 w-1">
                     <button @click="openDatePicker">
-                      <i class="fas fa-calendar" ></i>
                     </button>
-                  </div>
+                  </div> -->
                 </div>
               </div>
 
@@ -187,7 +203,7 @@
 
           </div>
           <!-- SIMILAR TICKETS -->
-          <div id="similar-tickets" class="h-auto w-2/3 bg-blue-200 bg-custom-700 rounded flex flex-col">
+          <div v-if="false" id="similar-tickets" class="h-auto w-3/4 bg-blue-200 bg-custom-700 rounded flex flex-col">
             
             <div id="similar-tickets-header" class="flex flex-row justify-center pt-3">
               <span class="pl-6 w-1/3 justify-center">
@@ -206,7 +222,6 @@
 
             <div class="flex flex-col p-4 justify-center">
               <hr>
-
               <div>
                 <span class="pl-3">
                   #2014 HYGIENE
@@ -259,13 +274,17 @@
 
 <script>
 import MainTitleComp from '../../components/MainTitleComp.vue';
+import DropboxComp from '../../components/DropboxComp.vue';
 import { db } from "../../firebaseConfig.js";
 import { ref, push, child, set, update, get, remove} from "firebase/database";
 import { DateTime } from 'luxon';
 import '@fortawesome/fontawesome-free/css/all.css';
 import Popup from '../../components/popup.vue';
 import { ref as refer } from 'vue';
+import { toHandlers } from 'vue';
+import Fuse from 'fuse.js';
 
+const referenceT = ref(db, "tickets/");
 
 export default {
   components: {
@@ -281,7 +300,7 @@ export default {
 		const TogglePopup = (trigger) => {
 			popupTriggers.value[trigger] = !popupTriggers.value[trigger]
 		}
-        setTimeout(() => {
+    setTimeout(() => {
 			popupTriggers.value.timedTrigger = true;
 		}, 3000);
         
@@ -294,22 +313,28 @@ export default {
   data() {
     return {
         JSONUser:[],
+        JSONData:[],
         response:'',
+        tickets_from_db: [],
+        similarTickets: [],
         userpath: '',
-      requester: '',
-      date: '',
-      department: '',
-      description: '',
-      priority: '',
-      status: '',
-      subject: '',
-      isOpen: false,
-      isOpenEmp: false,
-      selectedOption: null,
-      selectedEmp: null,
-      selectedDate: '',
-      options: ['Open', 'Closed', 'Pending'], // Add your dropdown options here
-      employees: [] // Add your dropdown options here
+        requester: '',
+        date: '',
+        solved_by_date: '',
+        department: '',
+        description: '',
+        url: '',
+        fileName: '',
+        priority: '',
+        status: '',
+        subject: '',
+        isOpen: false,
+        isOpenEmp: false,
+        selectedOption: null,
+        selectedEmp: null,
+        selectedDate: '',
+        options: ['Open', 'Closed', 'Pending'], // Add your dropdown options here
+        employees: [] // Add your dropdown options here
     };
   },
   methods: {
@@ -319,18 +344,21 @@ export default {
         set(child(ref(db),"users/"+this.userpath+"/tickets_assigned/"+ useRoute().params.id), {
             ticket_author: this.requester,
             ticket_date: this.date,
+            ticket_solved_by_date: this.solved_by_date,
             ticket_subject:this.subject,
             ticket_department:this.department,
             ticket_description:this.description,
             ticket_priority:this.priority,
             ticket_user_assigned: this.selectedEmp,
-            ticket_status: "Pending",
+            ticket_status: this.status,
             ticket_reply: this.response
         });
         update(child(ref(db),"tickets/"+useRoute().params.id+"/"), {
             ticket_user_assigned: this.selectedEmp,
             ticket_reply: this.response,
-            ticket_status:"Pending"
+            ticket_priority:this.priority,
+            ticket_status:this.status,
+            ticket_solved_by_date: (this.response)? Date(): this.solved_by_date
         });
         this.TogglePopup('buttonTrigger')
     },
@@ -349,6 +377,31 @@ export default {
             }
         };
     },
+    readTickets() {
+        get(referenceT).then((snapshot) => {
+            this.JSONData = snapshot.val();
+            this.readProperties(this.JSONData)
+        })
+
+    },
+    readProperties(data){
+        for (const ticketId in data) {
+            
+            if (Object.hasOwnProperty.call(data, ticketId)) {
+                const ticket = data[ticketId];
+                const formattedDate = DateTime.fromFormat(ticket.ticket_date.slice(0,15), 'ccc MMM dd yyyy').toFormat('M/d/yy');
+                this.tickets_from_db.push({
+                    id: ticketId,
+                    subject: ticket.ticket_subject,
+                    requester: ticket.ticket_author,
+                    priority: ticket.ticket_priority,
+                    status: ticket.ticket_status,
+                    date: formattedDate,
+                    assigned_to: ticket.ticket_user_assigned
+                })
+            }
+        };
+    },
     deleteTicket(){
         remove(child(ref(db),"tickets/"+useRoute().params.id));
         this.TogglePopup('buttonTrigger')
@@ -356,15 +409,21 @@ export default {
     readTicket(reference){
       get(reference).then((snapshot) => { 
         const formattedDate = DateTime.fromFormat(snapshot.val().ticket_date.slice(0,15), 'ccc MMM dd yyyy').toFormat('M/d/yy');
+        const formattedSolvedByDate = (!snapshot.val().ticket_solved_by_date)?"":DateTime.fromFormat(snapshot.val().ticket_solved_by_date.slice(0,15), 'ccc MMM dd yyyy').toFormat('M/d/yy');
         this.requester = snapshot.val().ticket_author;
         this.date = formattedDate; 
+        this.solved_by_date = formattedSolvedByDate; 
         this.department = snapshot.val().ticket_department + " Department";
         this.description = snapshot.val().ticket_description;
         this.priority = snapshot.val().ticket_priority;
         this.status = snapshot.val().ticket_status;
         this.subject = snapshot.val().ticket_subject;
+        this.url = snapshot.val().ticket_file_link;
+        this.fileName = snapshot.val().ticket_file_name;
+        this.selectedEmp = snapshot.val().ticket_user_assigned;
         if(snapshot.val().ticket_reply !== ""){
             this.response = snapshot.val().ticket_reply;
+            // this.solved_by_date = "";
         }
       })
     },
@@ -378,9 +437,9 @@ export default {
       }
     },
     selectOption(option , type) {
-      if(type == "status"){
-        this.selectedOption = option.name;
-        this.userpath = option.id;
+      if(type === "status"){
+        // this.selectedOption = option.name;
+        this.status = option;
         this.isOpen = false;
       }else{
         this.selectedEmp = option.name;
@@ -388,6 +447,13 @@ export default {
         this.isOpenEmp = false;
       }
     },
+    formatNames(employees) {
+      let names = employees.map(emp => emp.name);
+      names.shift();
+      console.log(names[0]);
+      return names;
+    }
+    ,
     chooseTheDotColor(priority) {
       switch (priority.toLocaleLowerCase().trim()) {
         case "high":
@@ -401,13 +467,31 @@ export default {
     openDatePicker() {
       this.$refs.datePicker.click();
       console.log(this.selectedDate);
+    },
+    switchBetweenPriorities() {
+      this.priority = this.priority === "high" ? "low" : this.priority === "low" ? "medium" : "high";
+    },
+    shortenText(text , limit = 21) {
+        return (text.length < limit)? text :text.substring(0,limit-3)+'...';
+    },
+    similarTicketsFromSubject(){
+      console.log(this.tickets_from_db);
+        const fuse = new Fuse(this.tickets_from_db, {
+            keys: ['subject'],
+            threshold: 0.5, // Adjust the threshold as needed
+            limit: 4
+        });
+        this.similarTickets = fuse.search("hygiene").map(({ item }) => item);
+        console.log("asdasd");
     }
   },
   beforeMount() {
     const { id } = useRoute().params;
     const reference = ref(db, "tickets/"+id+"/");
     this.readTicket(reference)
+    this.readTickets()
     this.readUsers(ref(db, "users/"))
+    this.similarTicketsFromSubject();
 },
 };
 </script>
