@@ -78,15 +78,14 @@
               v-model="response"
                 id="response"
                 class="p-4 flex-1 resize-none w-full border h-auto focus:ring-blue-500 focus:border-blue-500 lg:text-lg"
-                placeholder="Enter response..."
-              ></textarea>
+                placeholder="Enter Response"
+              >{{ this.response }}</textarea>
             </div>
             
           </div>
   <!-- SUBMIT BUTTON -->
   
           <div class="flex justify-end">
-            <p>xd: {{ this.userpath }}</p>
             <button @click="submitForm" type="submit" class="bg-custom-red-wine milkstore-text text-xl w-36 h-15 hover:bg-red-500 text-white font-bold py-2 px-4 items-center justify-center">
               <span class="pl-2">SUBMIT</span>
             </button>
@@ -293,13 +292,15 @@ export default {
             ticket_department:this.department,
             ticket_description:this.description,
             ticket_priority:this.priority,
-            ticket_status: this.status,
-            ticket_request: this.response
+            ticket_user_assigned: this.selectedEmp,
+            ticket_status: "Pending",
+            ticket_reply: this.response
         });
         console.log(ref(db),"tickets/"+useRoute().params.id)
         update(child(ref(db),"tickets/"+useRoute().params.id+"/"), {
             ticket_user_assigned: this.selectedEmp,
-            ticket_reply: this.response
+            ticket_reply: this.response,
+            ticket_status:"Pending"
         });
     },
     readUsers(userRef){
@@ -327,6 +328,9 @@ export default {
         this.priority = snapshot.val().ticket_priority;
         this.status = snapshot.val().ticket_status;
         this.subject = snapshot.val().ticket_subject;
+        if(snapshot.val().ticket_reply !== ""){
+            this.response = snapshot.val().ticket_reply;
+        }
       })
     },
     toggleDropdown(type) {
