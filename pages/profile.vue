@@ -10,7 +10,7 @@
         >
           <div
             id="title"
-            class="w-11/12 h-1/6 mt-4 flex items-center text-white font-bold text-4xl font-[Milkstore]"
+            class="w-11/12 h-1/6 mt-4 flex items-center text-white font-bold text-4xl milkstore04-text"
           >
             <h1>My Tickets</h1>
           </div>
@@ -23,29 +23,44 @@
               :key="index"
               class="m-4 bg-[#8A2432] h-1/5 flex flex-column rounded-lg text-white"
             >
-              <div id="ticket_status" class="h-full w-1/12 rounded-lg">
+              <div
+                id="ticket_status"
+                class="h-full w-1/12 rounded-lg ticket-detail"
+              >
                 <img
                   :src="getTicketStatusImage(ticket.ticket_status)"
                   class="w-8 h-8 mt-3 ml-3"
                 />
               </div>
-              <div id="ticket-content" class="flex flex-row">
-                <div id="ticket-title" class="h-full w-3/12 p-1">
-                  {{ ticket.ticket_name }}
+              <div id="ticket-content" class="flex flex-row items-center">
+                <div
+                  id="ticket-title"
+                  class="h-full w-4/12 p-1 border-r border-gray-400 flex-grow"
+                >
+                  {{ ticket.ticket_subject }}
+                </div>
+                <div
+                  id="ticket-priority"
+                  class="h-full w-2/12 p-1 border-r border-gray-400 flex-grow"
+                >
+                  {{ ticket.ticket_priority }}
                 </div>
                 <div
                   id="ticket-author"
-                  class="h-full w-2/12 p-1 overflow-hidden"
+                  class="h-full w-2/12 p-1 overflow-hidden border-r border-gray-400 flex-grow"
                 >
                   {{ ticket.ticket_author }}
                 </div>
                 <div
                   id="ticket-description"
-                  class="h-full p-1 w-5/12 overflow-hidden"
+                  class="h-full p-1 w-5/12 overflow-hidden border-r border-gray-400 flex-grow"
                 >
                   {{ ticket.ticket_description }}
                 </div>
-                <div id="ticket-date" class="w-2/12 h-full p-1">
+                <div
+                  id="ticket-date"
+                  class="w-12/12 h-full p-1 left ticket-detail flex-grow"
+                >
                   {{ ticket.ticket_date }}
                 </div>
               </div>
@@ -118,56 +133,52 @@
   </div>
 </template>
 
-<script>
-import { getDatabase, ref, onValue } from "firebase/database";
-export default {
-  data() {
-    return {
-      currentTime: "",
-      user: {
-        full_name: "",
-        email: "",
-        location: "",
-        position: "",
-      },
-      tickets: [],
-    };
-  },
-  mounted() {
-    this.getCurrentTime();
-    this.getUserDataFromFirebase();
-  },
-  methods: {
-    getCurrentTime() {
-      const now = new Date();
-      this.currentTime = now.toLocaleTimeString();
-    },
-    async getUserDataFromFirebase() {
-      try {
-        const db = getDatabase();
-        const usersRef = ref(db, "users/user1");
-        onValue(usersRef, (snapshot) => {
-          const userData = snapshot.val();
-          //console.log(userData);
-          this.user = userData;
-          this.tickets = Object.values(userData.tickets || {});
-        });
-        //console.log("Your values properly passed");
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-        //console.log(1);
-      }
-    },
-    getTicketStatusImage(status) {
-      switch (status) {
-        case "Complete":
-          return "../images/complete.png";
-        case "In Progress":
-          return "../images/in_progress.png";
-        default:
-          return "../images/invalid.png";
-      }
-    },
-  },
-};
+<script setup>
+import { ref, onMounted } from "vue";
+import { getDatabase, ref as dbRef, onValue } from "firebase/database";
+import { db } from "../firebaseConfig.js";
+
+const currentTime = ref("");
+const user = ref({
+  full_name: "",
+  email: "",
+  location: "",
+  position: "",
+});
+const tickets = ref([]);
+
+onMounted(async () => {
+  getCurrentTime();
+  await getUserDataFromFirebase();
+});
+
+function getCurrentTime() {
+  const now = new Date();
+  currentTime.value = now.toLocaleTimeString();
+}
+
+async function getUserDataFromFirebase() {
+  try {
+    const usersRef = dbRef(db, "users/user1");
+    onValue(usersRef, (snapshot) => {
+      const userData = snapshot.val();
+      user.value = userData;
+      tickets.value = Object.values(userData.tickets_assigned || {});
+      console.log("The tickets are : " + tickets.value);
+    });
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+  }
+}
+
+function getTicketStatusImage(status) {
+  switch (status.toLowerCase()) {
+    case "complete":
+      return "../images/complete.png";
+    case "in progress":
+      return "../images/in_progress.png";
+    default:
+      return "../images/invalid.png";
+  }
+}
 </script>
