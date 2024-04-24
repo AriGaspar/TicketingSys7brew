@@ -1,12 +1,12 @@
 <template>
-    <div class="px-40 milkstore-text text-xl">
+    <div class="px-40 milkstore-text text-xl pt-10">
 <!-- TITLE -->
         <MainTitleComp :title="'Create Ticket'"/>
         <Popup 
-			v-if="popupTriggers.buttonTrigger" 
-			:TogglePopup="() => TogglePopup('buttonTrigger')">
-			<h2>My Button Popup</h2>
-		</Popup>
+          v-if="popupTriggers.buttonTrigger" 
+          :TogglePopup="() => TogglePopup('buttonTrigger')">
+          <h2>My Button Popup</h2>
+        </Popup>
 <!-- FORM -->
         <form @submit.prevent="submitForm" id="loginForm">
             <div class="grid grid-cols-3 w-full px-32 justify-center gap-4 items-start">
@@ -65,9 +65,9 @@ import MainTitleComp from '../components/MainTitleComp.vue';
 import DropboxComp from '../components/DropboxComp.vue';
 import Popup from '../components/popup.vue';
 import { ref as refer } from 'vue';
-import { storage } from "../../firebaseConfig";
+import { storage } from "../../firebaseConfig.js";
 
-import { uploadBytes } from "firebase/storage";
+import { ref as ref2, uploadBytes, getDownloadURL } from "firebase/storage";
 
 export default {
   name:'TicketCreation',
@@ -111,11 +111,19 @@ export default {
   },
   methods: {
     submitForm: async function() {
-      // const ticketDate = new Date();
-      // const month = ticketDate.getMonth() + 1; 
-      // const day = ticketDate.getDate();
-      // const year = ticketDate.getFullYear() % 100; 
-      // const formattedDate = `${month}/${day}/${year}`;
+      let downloadLink = "";
+      if (this.selectedFile) {
+        const storageRef = ref2(storage , 'files/'+this.selectedFileName)
+        uploadBytes(storageRef, this.selectedFile)
+          .then((snapshot) => {
+            console.log('File uploaded successfully:', snapshot);
+            downloadLink = getDownloadURL(snapshot.ref);
+            window.open(downloadLink, '_blank');
+          })
+          .catch((error) => {
+            console.error('Error uploading file:', error);
+          });
+      }
       const reference = ref(db);
       push(child(reference, "tickets"),{
         ticket_author: "Marlon Gaitan",
@@ -125,7 +133,9 @@ export default {
         ticket_description:this.description,
         ticket_priority:this.priority,
         ticket_status: "Open",
-    });
+        ticket_file_link: downloadLink
+      });
+      
     },
     handleSelectedDepartment(option) {
       this.department = option;
@@ -143,20 +153,6 @@ export default {
       if (selectedFile) {
         this.selectedFileName = (selectedFile.name.length < 20)? selectedFile.name :selectedFile.name.substring(0,15)+'... '+selectedFile.name.substring(selectedFile.name.length-6,selectedFile.name.length);
         this.selectedFile = selectedFile;
-        
-        const storageRef = ref(storage , 'files/'+selectedFile.name)
-        uploadBytes(storageRef, selectedFile)
-          .on("state_changed",(snapshot) => {
-            console.log('Uploading!');
-          },
-          (error) => {
-            console.log(error);
-          },
-          () => {
-            console.log('Uploaded a blob or file!');
-          }
-        );
-        
         this.isFileObtained = true;
       }
     },
