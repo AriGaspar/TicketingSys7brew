@@ -7,47 +7,45 @@
       src="../src/assets/images/017Brew_Tertiary.png"
     />
     <p class="text-[24px] text-white">Welcome to 7Brew's Ticketing System</p>
-    <div class="flex flex-col">
+    <div class="flex flex-col items-center mt-8">
       <input
         v-model="email"
-        class="text-[24px] w-[270px] h-[36px] p-2 mt-4"
+        class="text-[24px] w-[270px] h-1/5 p-2"
         type="text"
         placeholder="Email"
       />
       <input
         v-model="password"
-        class="text-[24px] w-[270px] h-[36px] p-2 mt-4"
+        class="text-[24px] w-[270px] h-1/5 p-2 mt-4"
         type="password"
         placeholder="Password"
       />
       <button
-        class="bg-[#231F20] text-[24px] w-[270px] h-[36px] mt-4 text-white"
         @click="signInWithEmailAndPass"
+        class="bg-[#231F20] text-[24px] w-[270px] h-1/5 mt-4 text-white"
       >
         Sign In
       </button>
-      <div class="mt-8">
-        <button
-          @click="loginWithMicrosoft"
-          class="w-full h-12 px-6 text-white text-2xl transition-colors duration-150 hover:bg-primary-900 rounded-sm focus:shadow-outline bg-[#231F20] -mt-4"
+      <button
+        @click="loginWithMicrosoft"
+        class="w-[270px] h-1/5 px-6 py-2 text-white text-lg mt-4 transition-colors duration-150 hover:bg-primary-900 rounded-sm focus:shadow-outline bg-[#231F20]"
+      >
+        <svg
+          class="inline-block w-6 h-6 mr-2"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          width="21"
+          height="21"
+          viewBox="0 0 21 21"
         >
-          <svg
-            class="inline-block w-6 h-6 mr-2"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            width="21"
-            height="21"
-            viewBox="0 0 21 21"
-          >
-            <title>MS-SymbolLockup</title>
-            <rect x="1" y="1" width="9" height="9" fill="#f25022" />
-            <rect x="1" y="11" width="9" height="9" fill="#00a4ef" />
-            <rect x="11" y="1" width="9" height="9" fill="#7fba00" />
-            <rect x="11" y="11" width="9" height="9" fill="#ffb900" />
-          </svg>
-          Sign in with Microsoft
-        </button>
-      </div>
+          <title>MS-SymbolLockup</title>
+          <rect x="1" y="1" width="9" height="9" fill="#f25022" />
+          <rect x="1" y="11" width="9" height="9" fill="#00a4ef" />
+          <rect x="11" y="1" width="9" height="9" fill="#7fba00" />
+          <rect x="11" y="11" width="9" height="9" fill="#ffb900" />
+        </svg>
+        Sign in with Microsoft
+      </button>
     </div>
   </div>
 </template>
@@ -55,6 +53,8 @@
 <script>
 import {
   getAuth,
+  OAuthProvider,
+  signInWithPopup,
   signInWithEmailAndPassword as signInWithEmail,
 } from "firebase/auth";
 import { ref } from "vue";
@@ -87,10 +87,18 @@ export default {
     };
 
     const loginWithMicrosoft = async () => {
-      // Your implementation for Microsoft sign-in
+      const provider = new OAuthProvider("microsoft.com");
+      try {
+        const result = await signInWithPopup(auth, provider);
+        const credential = OAuthProvider.credentialFromResult(result);
+        console.log(1);
+        router.push("/ticketTable"); //send user to home page
+      } catch (error) {
+        console.log(error);
+      }
     };
 
-    return { signInWithEmailAndPass, loginWithMicrosoft }; // Return functions for use in the template
+    return { signInWithEmailAndPass, loginWithMicrosoft };
   },
 };
 </script>
