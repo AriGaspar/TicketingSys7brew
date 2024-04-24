@@ -1,6 +1,5 @@
 <template>
   <div id="screen" class="h-screen bg-gray-200 flex flex-row">
-    <Menu />
     <div id="info-side" class="bg-blue-600 flex flex-row h-full w-full">
       <div id="left-side" class="bg-white h-full w-8/12">
         <h1 class="ml-12 mt-6 -mb-6 text-2xl font-bold">Profile</h1>
