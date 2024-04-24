@@ -4,7 +4,7 @@
     class="bg-[#8A2432] group items-center h-[100svh] w-[80px] flex flex-col p-4"
   >
     <!--Logo-->
-    <img class="w-8 h-8" src="../images/017Brew_Tertiary.png" />
+    <img class="w-8 h-8" src="../src/assets/images/017Brew_Tertiary.png" />
     <!--Everything except for the logo-->
     <div class="flex flex-col justify-between h-[100%]">
       <!--Menu Items-->
