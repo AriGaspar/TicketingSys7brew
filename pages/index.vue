@@ -65,9 +65,20 @@ export default {
   setup() {
     const auth = getAuth();
     const router = useRouter();
-    const email = ref("tester@gmail.com");
-    const password = ref("testingaccount1");
+    const email = ref("");
+    const password = ref("");
+
     const signInWithEmailAndPass = () => {
+      if (!email.value || !password.value) {
+        console.log("Email:", email.value);
+        console.log("Password:", password.value);
+        console.log("Please enter both email and password.");
+        return;
+      }
+
+      console.log("Email:", email.value);
+      console.log("Password:", password.value);
+
       signInWithEmail(auth, email.value, password.value)
         .then((data) => {
           console.log("Successfully signed in!");
@@ -98,7 +109,7 @@ export default {
       }
     };
 
-    return { signInWithEmailAndPass, loginWithMicrosoft };
+    return { signInWithEmailAndPass, loginWithMicrosoft, email, password };
   },
 };
 </script>
