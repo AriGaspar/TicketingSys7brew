@@ -11,6 +11,9 @@
       <MainTitleComp :title="'Ticket View'"/>
       <!-- TICKET NUMBER -->
       <div class="text-card flex justify-center">Ticket Code: {{ useRoute().params.id.slice(1,6) }}</div>
+      <button @click="deleteTicket" class="bg-custom-red-wine milkstore-text text-xl w-36 h-15 hover:bg-red-500 text-white font-bold py-2 px-4 items-center justify-center">
+              <span class="pl-2">Delete Ticket</span>
+        </button>
       <div class="flex w-full flex-row gap-4">
         <div class="flex flex-col main-content w-2/3 gap-4">
 
@@ -257,7 +260,7 @@
 <script>
 import MainTitleComp from '../../components/MainTitleComp.vue';
 import { db } from "../../firebaseConfig.js";
-import { ref, push, child, set, update, get} from "firebase/database";
+import { ref, push, child, set, update, get, remove} from "firebase/database";
 import { DateTime } from 'luxon';
 import '@fortawesome/fontawesome-free/css/all.css';
 import Popup from '../../components/popup.vue';
@@ -324,7 +327,6 @@ export default {
             ticket_status: "Pending",
             ticket_reply: this.response
         });
-        console.log(ref(db),"tickets/"+useRoute().params.id)
         update(child(ref(db),"tickets/"+useRoute().params.id+"/"), {
             ticket_user_assigned: this.selectedEmp,
             ticket_reply: this.response,
@@ -346,6 +348,10 @@ export default {
                 this.employees.push({id: userId , name: user.full_name})
             }
         };
+    },
+    deleteTicket(){
+        remove(child(ref(db),"tickets/"+useRoute().params.id));
+        this.TogglePopup('buttonTrigger')
     },
     readTicket(reference){
       get(reference).then((snapshot) => { 
