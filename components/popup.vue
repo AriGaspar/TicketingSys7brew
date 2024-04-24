@@ -2,7 +2,7 @@
 	<div class="popup">
 		<div class="popup-inner">
             <NuxtLink  to="/ticketTable">
-			<button class="popup-close milkstore04-text" @click="TogglePopup()">
+			<button class="popup-close milkstore-text text-xxl" @click="TogglePopup()">
 				OPERATION SUCCESSFUL!  
                 GO BACK HOME
 			</button>
