@@ -2,6 +2,11 @@
     <div class="px-40 milkstore-text text-xl">
 <!-- TITLE -->
         <MainTitleComp :title="'Create Ticket'"/>
+        <Popup 
+			v-if="popupTriggers.buttonTrigger" 
+			:TogglePopup="() => TogglePopup('buttonTrigger')">
+			<h2>My Button Popup</h2>
+		</Popup>
 <!-- FORM -->
         <form @submit.prevent="submitForm" id="loginForm">
             <div class="grid grid-cols-3 w-full px-32 justify-center gap-4 items-start">
@@ -27,7 +32,7 @@
                 <div></div> <!-- DO NOT REMOVE! -->
                 <!-- SUBMIT BUTTON -->
                 <div class="flex justify-between w-full col-span-2 items-center">
-                  <button type="submit" class="bg-custom-red-wine milkstore-text text-xl w-36 h-15 hover:bg-red-500 text-white font-bold py-2 px-4 items-center justify-center">
+                  <button @click="TogglePopup('buttonTrigger')" type="submit" class="bg-custom-red-wine milkstore-text text-xl w-36 h-15 hover:bg-red-500 text-white font-bold py-2 px-4 items-center justify-center">
                     <span class="pl-2">SUBMIT</span>
                   </button>
                   <div>
@@ -58,7 +63,8 @@ import { db } from "../firebaseConfig.js";
 import { getDatabase, ref, set, child, push, update } from "firebase/database";
 import MainTitleComp from '../components/MainTitleComp.vue';
 import DropboxComp from '../components/DropboxComp.vue';
-import { DateTime } from 'luxon';
+import Popup from '../components/popup.vue';
+import { ref as refer } from 'vue';
 import { storage } from "../../firebaseConfig";
 
 import { uploadBytes } from "firebase/storage";
@@ -67,8 +73,29 @@ export default {
   name:'TicketCreation',
   components: {
     MainTitleComp,
-    DropboxComp
+    DropboxComp,
+    Popup
   },
+  setup () {
+		const popupTriggers = refer({
+			buttonTrigger: false,
+			timedTrigger: false
+		});
+
+		const TogglePopup = (trigger) => {
+			popupTriggers.value[trigger] = !popupTriggers.value[trigger]
+		}
+
+		setTimeout(() => {
+			popupTriggers.value.timedTrigger = true;
+		}, 3000);
+
+		return {
+			Popup,
+			popupTriggers,
+			TogglePopup
+		}
+	},
   data() {
     return {
       subject: '',
@@ -98,9 +125,6 @@ export default {
         ticket_description:this.description,
         ticket_priority:this.priority,
         ticket_status: "Open",
-        ticket_reply:null,
-        ticket_user_assigned:null
-
     });
     },
     handleSelectedDepartment(option) {

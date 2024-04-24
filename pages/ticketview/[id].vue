@@ -3,6 +3,11 @@
       
 <!-- MAIN TITLE (TICKET VIEW) -->
 <!-- <div class="flex items-center flex-row h-16 justify-between mt-6 mb-6"> -->
+    <Popup 
+			v-if="popupTriggers.buttonTrigger" 
+			:TogglePopup="() => TogglePopup('buttonTrigger')">
+			<h2>My Button Popup</h2>
+		</Popup>
       <MainTitleComp :title="'Ticket View'"/>
       <!-- TICKET NUMBER -->
       <div class="text-card flex justify-center">Ticket Code: {{ useRoute().params.id.slice(1,6) }}</div>
@@ -255,12 +260,34 @@ import { db } from "../../firebaseConfig.js";
 import { ref, push, child, set, update, get} from "firebase/database";
 import { DateTime } from 'luxon';
 import '@fortawesome/fontawesome-free/css/all.css';
+import Popup from '../../components/popup.vue';
+import { ref as refer } from 'vue';
 
 
 export default {
   components: {
-    MainTitleComp
+    MainTitleComp,
+    Popup
   },
+  setup () {
+		const popupTriggers = refer({
+			buttonTrigger: false,
+			timedTrigger: false
+		});
+
+		const TogglePopup = (trigger) => {
+			popupTriggers.value[trigger] = !popupTriggers.value[trigger]
+		}
+        setTimeout(() => {
+			popupTriggers.value.timedTrigger = true;
+		}, 3000);
+        
+		return {
+			Popup,
+			popupTriggers,
+			TogglePopup
+		}
+	},
   data() {
     return {
         JSONUser:[],
@@ -303,6 +330,7 @@ export default {
             ticket_reply: this.response,
             ticket_status:"Pending"
         });
+        this.TogglePopup('buttonTrigger')
     },
     readUsers(userRef){
         get(userRef).then((snapshot) => {
