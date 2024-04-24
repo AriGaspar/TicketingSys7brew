@@ -37,7 +37,7 @@
                   </button>
                   <div>
                     <input type="file" ref="fileInput" style="display: none" @change="handleFileUpload">
-                    <button @click="openFileExplorer" class="flex flex-row items-center milkstore04-text pr-4">
+                    <button @click="openFileExplorer" type="button" class="flex flex-row items-center milkstore04-text pr-4">
                       <svg v-if="!isFileObtained"  fill="#000000" width="20px" height="20px" viewBox="0 0 24 24" id="paper-clip-top-right" data-name="Flat Line" xmlns="http://www.w3.org/2000/svg" class="icon flat-line"><path id="primary" d="M5.23,8.73,9.18,4.78a6.1,6.1,0,0,1,8.61,0h0a6.09,6.09,0,0,1,0,8.6l-6.43,6.43a4,4,0,0,1-5.74,0h0a4.06,4.06,0,0,1,0-5.73l6.74-6.74a2,2,0,0,1,2.87,0h0a2,2,0,0,1,0,2.87l-7,7" style="fill: none; stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></path></svg>
                       <p>{{ isFileObtained? selectedFileName:"NO FILE" }}</p>
                     </button>
@@ -114,28 +114,36 @@ export default {
       let downloadLink = "";
       if (this.selectedFile) {
         const storageRef = ref2(storage , 'files/'+this.selectedFileName)
-        uploadBytes(storageRef, this.selectedFile)
-          .then((snapshot) => {
-            console.log('File uploaded successfully:', snapshot);
-            downloadLink = getDownloadURL(snapshot.ref);
-            window.open(downloadLink, '_blank');
-          })
-          .catch((error) => {
-            console.error('Error uploading file:', error);
-          });
+        try {
+          const snapshot = await uploadBytes(storageRef, this.selectedFile);
+          console.log('File uploaded successfully:', snapshot);
+          const url = await getDownloadURL(snapshot.ref);
+          console.log('LINK?: ', url);
+          this.saveTicket(url);
+        } catch (error) {
+          console.error('Error uploading file:', error);
+        }
+      }else{  
+        this.saveTicket('');
       }
-      const reference = ref(db);
-      push(child(reference, "tickets"),{
+      
+    },
+    saveTicket: function(downloadLink) {
+      const reference = ref(db, 'tickets');
+      push(reference, {
         ticket_author: "Marlon Gaitan",
         ticket_date: Date(),
-        ticket_subject:this.subject,
-        ticket_department:this.department,
-        ticket_description:this.description,
-        ticket_priority:this.priority,
+        ticket_subject: this.subject,
+        ticket_department: this.department,
+        ticket_description: this.description,
+        ticket_priority: this.priority,
         ticket_status: "Open",
         ticket_file_link: downloadLink
+      }).then(() => {
+        console.log('Ticket saved successfully!');
+      }).catch((error) => {
+        console.error('Error saving ticket:', error);
       });
-      
     },
     handleSelectedDepartment(option) {
       this.department = option;
