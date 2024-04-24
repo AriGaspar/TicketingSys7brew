@@ -6,95 +6,99 @@
       class="w-[106.5px] mb-2 h-[114x]"
       src="../src/assets/images/017Brew_Tertiary.png"
     />
-    <p class="text-[24px] text-white">Welcome to 7Brews Ticketing System</p>
-    <form class="flex flex-col">
+    <p class="text-[24px] text-white">Welcome to 7Brew's Ticketing System</p>
+    <div class="flex flex-col items-center mt-8">
       <input
         v-model="email"
-        class="text-[24px] w-[270px] h-[36px] p-2 mt-4"
+        class="text-[24px] w-[270px] h-1/5 p-2"
         type="text"
         placeholder="Email"
       />
       <input
-        class="text-[24px] w-[270px] h-[36px] p-2 mt-4"
+        v-model="password"
+        class="text-[24px] w-[270px] h-1/5 p-2 mt-4"
         type="password"
         placeholder="Password"
-        v-model="password"
       />
       <button
-        class="bg-[#231F20] text-[24px] w-[270px] h-[36px] mt-4 text-white"
-        @click="signInWithEmailPassword"
+        @click="signInWithEmailAndPass"
+        class="bg-[#231F20] text-[24px] w-[270px] h-1/5 mt-4 text-white"
       >
         Sign In
       </button>
-      <!--Add Buttons for Microsoft and Google, you are only going to need to use Microsoft-->
-      <div class="mt-8">
-        <button
-          @click="loginWithMicrosoft"
-          class="w-full h-12 px-6 text-white text-2xl transition-colors duration-150 hover:bg-primary-900 rounded-sm focus:shadow-outline bg-[#231F20] -mt-4"
+      <button
+        @click="loginWithMicrosoft"
+        class="w-[270px] h-1/5 px-6 py-2 text-white text-lg mt-4 transition-colors duration-150 hover:bg-primary-900 rounded-sm focus:shadow-outline bg-[#231F20]"
+      >
+        <svg
+          class="inline-block w-6 h-6 mr-2"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          width="21"
+          height="21"
+          viewBox="0 0 21 21"
         >
-          <svg
-            class="inline-block w-6 h-6 mr-2"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            width="21"
-            height="21"
-            viewBox="0 0 21 21"
-          >
-            <title>MS-SymbolLockup</title>
-            <rect x="1" y="1" width="9" height="9" fill="#f25022" />
-            <rect x="1" y="11" width="9" height="9" fill="#00a4ef" />
-            <rect x="11" y="1" width="9" height="9" fill="#7fba00" />
-            <rect x="11" y="11" width="9" height="9" fill="#ffb900" />
-          </svg>
-          Sign in with Microsoft
-        </button>
-      </div>
-    </form>
+          <title>MS-SymbolLockup</title>
+          <rect x="1" y="1" width="9" height="9" fill="#f25022" />
+          <rect x="1" y="11" width="9" height="9" fill="#00a4ef" />
+          <rect x="11" y="1" width="9" height="9" fill="#7fba00" />
+          <rect x="11" y="11" width="9" height="9" fill="#ffb900" />
+        </svg>
+        Sign in with Microsoft
+      </button>
+    </div>
   </div>
 </template>
 
-<script setup>
+<script>
 import {
   getAuth,
-  signInWithEmailAndPassword,
-  signInWithPopup,
   OAuthProvider,
+  signInWithPopup,
+  signInWithEmailAndPassword as signInWithEmail,
 } from "firebase/auth";
-import { onMounted, ref } from "vue";
-import { routerKey } from "vue-router";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { db } from "../firebaseConfig.js";
 
-const email = ref("");
-const password = ref("");
+export default {
+  setup() {
+    const auth = getAuth();
+    const router = useRouter();
+    const email = ref("tester@gmail.com");
+    const password = ref("testingaccount1");
+    const signInWithEmailAndPass = () => {
+      signInWithEmail(auth, email.value, password.value)
+        .then((data) => {
+          console.log("Successfully signed in!");
+          router.push("/ticketTable");
+        })
+        .catch((error) => {
+          console.log(error.code);
+          switch (error.code) {
+            case "auth/invalid-email":
+              console.log("Sign in error (invalid-email):" + error);
+              break;
+            default:
+              console.log(error);
+              break;
+          }
+        });
+    };
 
-const loginWithMicrosoft = async () => {
-  const auth = getAuth();
-  const provider = new OAuthProvider("microsoft.com");
-  try {
-    const result = await signInWithPopup(auth, provider);
-    // Handle successful login
-    console.log("Microsoft sign-in successful");
-    // Redirect or perform other actions after successful login
-  } catch (error) {
-    // Handle errors
-    console.error("Microsoft sign-in error:", error);
-  }
-};
+    const loginWithMicrosoft = async () => {
+      const provider = new OAuthProvider("microsoft.com");
+      try {
+        const result = await signInWithPopup(auth, provider);
+        const credential = OAuthProvider.credentialFromResult(result);
+        console.log(1);
+        router.push("/ticketTable"); //send user to home page
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
-const signInWithEmailPassword = async () => {
-  const auth = getAuth();
-  try {
-    const userCredential = await signInWithEmailAndPassword(
-      auth,
-      email.value,
-      password.value
-    );
-    // Handle successful login
-    console.log("Email/password sign-in successful");
-    router.push("/profile");
-    // Redirect or perform other actions after successful login
-  } catch (error) {
-    // Handle errors
-    console.error("Email/password sign-in error:", error);
-  }
+    return { signInWithEmailAndPass, loginWithMicrosoft };
+  },
 };
 </script>

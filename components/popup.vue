@@ -3,7 +3,7 @@
 		<div class="popup-inner">
             <NuxtLink  to="/ticketTable">
 			<button class="popup-close" @click="TogglePopup()">
-				TICKET SUBMITTED SUCCESSFULLY!  
+				OPERATION SUCCESSFUL!  
                 GO BACK HOME
 			</button>
             </NuxtLink>
