@@ -38,11 +38,11 @@
             class="col-start-3 row-start-1 p-4 dark:bg-black rounded-md shadow-lg flex flex-col justify-center items-center bg-white"
           >
             <h1
-              class="text-black dark:text-white dark:text-whitetext-2xl tracking-wide font-Milkstore"
+              class="text-black dark:text-white dark:text-whitetext-2xl tracking-wide milkstore-text"
             >
               Tickets Created By You
             </h1>
-            <h1 class="text-red-500 text-6xl tracking-wide font-Milkstore">
+            <h1 class="text-red-500 text-6xl tracking-wide milkstore-text">
               17
             </h1>
           </div>
@@ -64,11 +64,11 @@
             class="dark:bg-black rounded-md shadow-lg p-4 flex flex-col justify-center items-center bg-white"
           >
             <h1
-              class="text-black dark:text-white dark:text-whitetext-2xl tracking-wide font-Milkstore"
+              class="text-black dark:text-white dark:text-whitetext-2xl tracking-wide milkstore-text"
             >
               Tickets Created By You
             </h1>
-            <h1 class="text-red-500 text-6xl tracking-wide font-Milkstore">
+            <h1 class="text-red-500 text-6xl tracking-wide milkstore-text">
               17
             </h1>
           </div>
@@ -76,11 +76,11 @@
             class="dark:bg-black p-4 rounded-md shadow-lg flex flex-col justify-center items-center bg-white"
           >
             <h1
-              class="text-black dark:text-white dark:text-whitetext-2xl tracking-wide font-Milkstore"
+              class="text-black dark:text-white dark:text-whitetext-2xl tracking-wide milkstore-text"
             >
               Tickets Created By You
             </h1>
-            <h1 class="text-red-500 text-6xl tracking-wide font-Milkstore">
+            <h1 class="text-red-500 text-6xl tracking-wide milkstore-text">
               {{t_created}}
             </h1>
           </div>
@@ -88,11 +88,11 @@
             class="col-start-1 dark:bg-black rounded-md shadow-lg p-4 flex flex-col justify-center items-center bg-white"
           >
             <h1
-              class="text-black dark:text-white dark:text-whitetext-2xl tracking-wide font-Milkstore"
+              class="text-black dark:text-white dark:text-whitetext-2xl tracking-wide milkstore-text"
             >
               Tickets Created By You
             </h1>
-            <h1 class="text-red-500 text-6xl tracking-wide font-Milkstore">
+            <h1 class="text-red-500 text-6xl tracking-wide milkstore-text">
               17
             </h1>
           </div>
@@ -238,9 +238,9 @@ import { getDatabase, ref, onValue } from "firebase/database";
 
 const count =0;
 const ticketref= ref(db,'tickets/');
-let t_created = 0;
-const set_created=()=>{
-  t_created=count;
+let t_created =0;
+const set_created=(value)=>{
+  t_created=value;
 }
 
 
@@ -251,12 +251,14 @@ snapshot.forEach((childSnapshot) => {
     const childData = childSnapshot.val();
       console.log(childData['ticket_author']);
     if(childData['ticket_author']==="Marlon Gaitan"){
+      console.log(count);
       count++;
    
     }
   
 
   });
+  
    set_created(4);
 },
 );
