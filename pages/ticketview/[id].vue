@@ -256,6 +256,7 @@ import { ref, push, child, set, update, get} from "firebase/database";
 import { DateTime } from 'luxon';
 import '@fortawesome/fontawesome-free/css/all.css';
 
+
 export default {
   components: {
     MainTitleComp
@@ -304,20 +305,20 @@ export default {
         });
     },
     readUsers(userRef){
-            get(userRef).then((snapshot) => {
-                this.JSONUser = snapshot.val();
-                this.readUserProp(this.JSONUser)
-            })
-        },
-        readUserProp(data){
-            for (const userId in data) {
-                
-                if (Object.hasOwnProperty.call(data, userId)) {
-                    const user = data[userId];
-                    this.employees.push({id: userId , name: user.full_name})
-                }
-            };
-        },
+        get(userRef).then((snapshot) => {
+            this.JSONUser = snapshot.val();
+            this.readUserProp(this.JSONUser)
+        })
+    },
+    readUserProp(data){
+        for (const userId in data) {
+            
+            if (Object.hasOwnProperty.call(data, userId)) {
+                const user = data[userId];
+                this.employees.push({id: userId , name: user.full_name})
+            }
+        };
+    },
     readTicket(reference){
       get(reference).then((snapshot) => { 
         const formattedDate = DateTime.fromFormat(snapshot.val().ticket_date.slice(0,15), 'ccc MMM dd yyyy').toFormat('M/d/yy');

@@ -59,6 +59,10 @@ import { getDatabase, ref, set, child, push, update } from "firebase/database";
 import MainTitleComp from '../components/MainTitleComp.vue';
 import DropboxComp from '../components/DropboxComp.vue';
 import { DateTime } from 'luxon';
+import { storage } from "../../firebaseConfig";
+
+import { uploadBytes } from "firebase/storage";
+
 export default {
   name:'TicketCreation',
   components: {
@@ -115,6 +119,19 @@ export default {
       if (selectedFile) {
         this.selectedFileName = (selectedFile.name.length < 20)? selectedFile.name :selectedFile.name.substring(0,15)+'... '+selectedFile.name.substring(selectedFile.name.length-6,selectedFile.name.length);
         this.selectedFile = selectedFile;
+        
+        const storageRef = ref(storage , 'files/'+selectedFile.name)
+        uploadBytes(storageRef, selectedFile)
+          .on("state_changed",(snapshot) => {
+            console.log('Uploading!');
+          },
+          (error) => {
+            console.log(error);
+          },
+          () => {
+            console.log('Uploaded a blob or file!');
+          }
+        );
         
         this.isFileObtained = true;
       }
