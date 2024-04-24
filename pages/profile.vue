@@ -22,12 +22,9 @@
               :key="index"
               class="m-4 bg-[#8A2432] h-1/5 flex flex-column rounded-lg text-white"
             >
-              <div
-                id="ticket_status"
-                class="h-full w-1/12 rounded-lg ticket-detail"
-              >
+              <div id="ticket_status" class="h-full w-1/12 rounded-lg">
                 <img
-                  :src="getTicketStatusImage(ticket.ticket_status)"
+                  src="../src/assets/images/in_progress.png"
                   class="w-8 h-8 mt-3 ml-3"
                 />
               </div>
@@ -177,7 +174,40 @@ function getTicketStatusImage(status) {
     case "in progress":
       return "../images/in_progress.png";
     default:
-      return "../images/invalid.png";
+    // return "../images/invalid.png";
   }
 }
 </script>
+<style scoped>
+#ticket-title {
+  line-height: 1.2;
+}
+
+#MyTickets {
+  border: 4px solid black;
+  border-radius: 0.5rem;
+}
+
+.ticket-detail {
+  border-color: gray;
+  border-width: 0 1px;
+}
+
+#MyTickets::-webkit-scrollbar {
+  width: 16px;
+}
+
+#MyTickets::-webkit-scrollbar-track {
+  border-radius: 8px;
+  background-color: #e7e7e7;
+  border: 1px solid #cacaca;
+}
+
+#MyTickets::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+  background-color: #d55959;
+  height: 30px;
+}
+</style>
