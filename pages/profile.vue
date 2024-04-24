@@ -192,4 +192,22 @@ function getTicketStatusImage(status) {
   border-color: gray;
   border-width: 0 1px;
 }
+
+#MyTickets::-webkit-scrollbar {
+  width: 16px;
+}
+
+#MyTickets::-webkit-scrollbar-track {
+  border-radius: 8px;
+  background-color: #e7e7e7;
+  border: 1px solid #cacaca;
+}
+
+#MyTickets::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+  background-color: #d55959;
+  height: 30px;
+}
 </style>
